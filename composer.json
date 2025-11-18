@@ -1,0 +1,81 @@
+{
+    "name": "mominalzaraa/filament-jetstream",
+    "description": "An enhanced Laravel starter kit built with Filament, inspired by Jetstream with complete team management features.",
+    "keywords": [
+        "mominalzaraa",
+        "laravel",
+        "starter kit",
+        "filament",
+        "filament-jetstream",
+        "jetstream",
+        "teams",
+        "multi-tenant"
+    ],
+    "homepage": "https://github.com/MominAlZaraa/filament-jetstream",
+    "support": {
+        "issues": "https://github.com/MominAlZaraa/filament-jetstream/issues",
+        "source": "https://github.com/MominAlZaraa/filament-jetstream"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/MominAlZaraa/filament-jetstream.git"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Momin Al Zaraa",
+            "email": "support@mominpert.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "filament/filament": "^4.0",
+        "stephenjude/filament-two-factor-authentication": "^3.0",
+        "illuminate/contracts": "^12.0",
+        "mobiledetect/mobiledetectlib": "^4.8",
+        "spatie/laravel-package-tools": "^1.15.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^10.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-arch": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0",
+        "larastan/larastan": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Filament\\Jetstream\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Filament\\Jetstream\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Filament\\Jetstream\\JetstreamServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
