@@ -4,6 +4,286 @@ All notable changes to `mominalzaraa/filament-jetstream` will be documented in t
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v1.0.0 - 2025-11-18
+
+### Release Notes - Enhanced Version
+
+#### 🎉 Major Release: Enhanced Filament Jetstream
+
+This release represents a **significant enhancement** over the previous `stephenjude/filament-jetstream` package, bringing back all the powerful features from the original Laravel Jetstream package with mature data handling patterns and seamless Filament UI integration.
+
+
+---
+
+#### 📦 What's New
+
+##### ✨ Enhanced Features
+
+###### 1. **Complete Team Management System**
+
+- ✅ **Add Team Members** - Invite users via email with role assignment
+- ✅ **Remove Team Members** - Remove members with proper authorization checks
+- ✅ **Update Team Member Roles** - Change roles dynamically with validation
+- ✅ **Team Deletion Validation** - Prevents accidental deletion of personal teams
+- ✅ **Proper Team Invitation Flow** - Users must register/login to accept invitations (aligned with Jetstream's mature handling)
+
+###### 2. **Contract-Based Architecture**
+
+All actions now use contracts/interfaces, matching Laravel Jetstream's architecture:
+
+- `UpdatesUserProfileInformation` - Profile updates
+- `InvitesTeamMembers` - Team invitations
+- `AddsTeamMembers` - Adding team members
+- `RemovesTeamMembers` - Removing team members (NEW)
+- `CreatesTeams` - Team creation
+- `UpdatesTeamNames` - Team name updates
+- `DeletesTeams` - Team deletion
+- `DeletesUsers` - User deletion
+
+###### 3. **Publishable Action Classes**
+
+All action classes are now publishable for complete customization:
+
+```bash
+php artisan vendor:publish --tag=filament-jetstream-actions
+
+```
+**Available Action Stubs:**
+
+- `UpdateUserProfileInformation.php` - Customize profile fields and section metadata
+- `InviteTeamMember.php` - Customize team invitations with role validation
+- `AddTeamMember.php` - Customize adding team members
+- `RemoveTeamMember.php` - Customize removing team members (NEW)
+- `CreateTeam.php` - Customize team creation
+- `UpdateTeamName.php` - Customize team updates
+- `DeleteTeam.php` - Customize team deletion
+- `DeleteUser.php` - Customize user deletion with team handling
+
+###### 4. **Enhanced Profile Field Customization**
+
+New methods in `UpdateUserProfileInformation` action:
+
+- `getFieldComponents()` - Returns form fields without Section wrapper (easier to customize)
+- `getSectionHeading()` - Customize section title
+- `getSectionDescription()` - Customize section description
+
+**Example: Adding a surname field**
+
+```php
+public function getFieldComponents(): array
+{
+    return [
+        // ... existing fields ...
+        TextInput::make('surname')
+            ->label(__('filament-jetstream::default.form.surname.label'))
+            ->required(),
+    ];
+}
+
+```
+###### 5. **Publishable Language Files**
+
+Language files now publish to `lang/{locale}/filament-jetstream.php` for better locale organization:
+
+```bash
+php artisan vendor:publish --tag=filament-jetstream-lang
+
+```
+**Features:**
+
+- Automatic merging with package translations
+- Custom translations override package defaults
+- Support for multiple locales (en, fr, es, el, etc.)
+- Easy to add custom fields and translations
+
+###### 6. **Enhanced Email Templates**
+
+- Conditional "Create Account" button (if registration is enabled)
+- Aligned messaging with Laravel Jetstream
+- Publishable for customization:
+
+```bash
+php artisan vendor:publish --tag=filament-jetstream-email-templates
+
+```
+###### 7. **Custom Validation Rules**
+
+- `Filament\Jetstream\Rules\Role` - Validates team roles (matches Jetstream's Role rule)
+
+###### 8. **Improved Team Invitation Flow**
+
+**Previous behavior:** Auto-registered new users (incorrect)
+**New behavior:** Users must register/login to accept invitations (correct, aligned with Jetstream)
+
+**How it works:**
+
+1. User receives invitation email
+2. If not registered → Redirected to registration (if enabled)
+3. If registered but not logged in → Redirected to login
+4. After authentication → Invitation automatically accepted
+5. Session-based invitation ID storage for security
+
+
+---
+
+#### 🔧 Technical Improvements
+
+##### Package Structure
+
+- ✅ Updated ownership to **Momin Al Zaraa**
+- ✅ Added `PLUGIN_INFO.json` for Filament directory integration
+- ✅ Added plugin banner image
+- ✅ Updated all GitHub workflows and references
+- ✅ Added `FUNDING.yml` for GitHub Sponsors
+
+##### Code Quality
+
+- ✅ PHPStan level increased to **5** (highest level)
+- ✅ Simplified PHPStan configuration (resolved memory issues)
+- ✅ All workflows tested and verified
+- ✅ Code style improvements (Laravel Pint)
+
+##### Workflow Improvements
+
+- ✅ Fixed unstaged changes handling in CI workflows
+- ✅ Updated PHP version requirements to `^8.3|^8.4`
+- ✅ Improved test workflows to match localization package
+
+
+---
+
+#### 📊 Comparison with Previous Version
+
+| Feature | Previous (`stephenjude/filament-jetstream`) | This Enhanced Version |
+|---------|---------------------------------------------|----------------------|
+| **Team Member Management** | Basic (add only) | Complete (add, remove, update roles) |
+| **Invitation Flow** | Auto-registration (incorrect) | Register/login required (correct) |
+| **Action Classes** | Limited publishability | Fully publishable with contracts |
+| **Profile Customization** | Hardcoded fields | Dynamic with `getFieldComponents()` |
+| **Language Files** | Vendor path only | Locale-first structure with auto-merge |
+| **Email Templates** | Basic | Enhanced with conditional buttons |
+| **Validation Rules** | Standard Laravel | Custom Role rule (Jetstream pattern) |
+| **Team Deletion** | Basic | With validation (prevents personal team deletion) |
+| **Contracts** | Partial | Complete contract-based architecture |
+| **Data Handling** | Simple | Mature patterns aligned with Jetstream |
+
+
+---
+
+#### 🚀 Migration Guide
+
+##### From `stephenjude/filament-jetstream`
+
+1. **Update Composer**
+   
+   ```bash
+   composer remove stephenjude/filament-jetstream
+   composer require nominalzaraa/filament-jetstream
+   
+   ```
+2. **Publish New Components**
+   
+   ```bash
+   php artisan vendor:publish --tag=filament-jetstream-actions
+   php artisan vendor:publish --tag=filament-jetstream-lang
+   php artisan vendor:publish --tag=filament-jetstream-email-templates
+   
+   ```
+3. **Update Language Files**
+   
+   - Old location: `lang/vendor/filament-jetstream/{locale}/default.php`
+   - New location: `lang/{locale}/filament-jetstream.php`
+   - Custom translations will automatically merge
+   
+4. **Team Invitation Flow Changes**
+   
+   - **Important:** The invitation flow now requires users to register/login
+   - If you had custom invitation handling, review and update accordingly
+   - Session-based invitation ID storage is now used
+   
+5. **Custom Action Classes**
+   
+   - If you published action classes, they should still work
+   - Consider updating to use new methods like `getFieldComponents()`
+   
+
+
+---
+
+#### ⚠️ Breaking Changes
+
+##### 1. Team Invitation Flow
+
+**Previous:** Auto-registered users when accepting invitations
+**New:** Users must register/login first
+
+**Impact:** Existing invitation links will redirect to registration/login if user is not authenticated.
+
+##### 2. Language File Location
+
+**Previous:** `lang/vendor/filament-jetstream/{locale}/default.php`
+**New:** `lang/{locale}/filament-jetstream.php`
+
+**Migration:** Copy your custom translations to the new location. The custom translation loader will automatically merge them.
+
+##### 3. PHP Version Requirement
+
+**Previous:** PHP ^8.2|^8.3|^8.4
+**New:** PHP ^8.3|^8.4
+
+**Impact:** PHP 8.2 is no longer supported.
+
+
+---
+
+#### 🎯 Key Benefits
+
+1. **Mature Data Handling** - Aligned with Laravel Jetstream's proven patterns
+2. **Complete Customization** - All components are publishable and customizable
+3. **Better Developer Experience** - Contract-based architecture for easy extension
+4. **Improved Security** - Proper invitation flow prevents unauthorized access
+5. **Enhanced Flexibility** - Easy to add custom fields, translations, and behaviors
+6. **Production Ready** - Tested workflows, PHPStan level 5, comprehensive error handling
+
+
+---
+
+#### 📝 Credits
+
+**Enhanced by:** Momin Al Zaraa
+**Based on:** [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream)
+**Inspired by:** [Laravel Jetstream](https://github.com/laravel/jetstream) (discontinued)
+
+
+---
+
+#### 🔗 Resources
+
+- **Repository:** https://github.com/MominAlZaraa/filament-jetstream
+- **Documentation:** See README.md for detailed usage instructions
+- **Issues:** https://github.com/MominAlZaraa/filament-jetstream/issues
+- **Support:** support@mominpert.com
+
+
+---
+
+#### 🙏 Acknowledgments
+
+Special thanks to:
+
+- **Stephen Jude** - Original Filament Jetstream implementation
+- **Laravel Team** - Original Jetstream package and framework
+- **Filament Team** - Amazing Filament framework
+
+
+---
+
+**Version:** 1.0.0
+**Release Date:** November 18, 2025
+**PHP Requirement:** ^8.3|^8.4
+**Laravel Requirement:** ^12.0
+**Filament Requirement:** ^4.0
+
 ## Enhanced Version - 2025-01-XX
 
 ### What's Enhanced
@@ -25,11 +305,13 @@ This enhanced version by **Momin Al Zaraa** brings complete Jetstream features a
 ### Credits
 
 This enhanced package builds upon:
+
 - **Laravel Jetstream** (discontinued): Original inspiration for team features and Action class patterns
 - **stephenjude/filament-jetstream**: Original Filament port
 - **Enhanced by**: Momin Al Zaraa - Complete Jetstream features and patterns
 
 **Repository**: https://github.com/MominAlZaraa/filament-jetstream
+
 
 ---
 
