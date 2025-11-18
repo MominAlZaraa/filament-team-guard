@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'mominalzaraa/filament-jetstream',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => '1.x-dev',
+        'version' => '1.9999999.9999999.9999999-dev',
+        'reference' => 'b81bef5ddd6d50fd222a284c2e3bbd7b4d1880c7',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -797,9 +797,9 @@
             'dev_requirement' => true,
         ),
         'mominalzaraa/filament-jetstream' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => '1.x-dev',
+            'version' => '1.9999999.9999999.9999999-dev',
+            'reference' => 'b81bef5ddd6d50fd222a284c2e3bbd7b4d1880c7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
