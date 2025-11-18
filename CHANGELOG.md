@@ -4,6 +4,35 @@ All notable changes to `mominalzaraa/filament-jetstream` will be documented in t
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v1.0.1 - 2025-01-18
+
+### Enhanced Team Invitation Acceptance & Improved Action Customization
+
+#### Added
+- `AcceptsTeamInvitations` contract interface for team invitation acceptance
+- `AcceptTeamInvitation` base action class implementing the contract
+- `AcceptTeamInvitation` publishable stub with commented default code examples
+- Automatic custom action discovery for team invitation acceptance
+- Enhanced all action stubs with commented default code examples
+
+#### Enhanced
+- `HasTeamsFeatures` trait now uses contract binding for team invitation acceptance
+- `JetstreamServiceProvider` registers `AcceptsTeamInvitations` contract
+- All action stubs include comprehensive commented examples showing customization patterns
+- Improved code consistency and documentation across all stubs
+
+#### Improved
+- Team invitation acceptance is now fully customizable like other actions
+- Backward compatible with closure-based customization
+- Cleaner stub format with generic examples (no project-specific code)
+- Better developer experience with ready-to-use code snippets
+
+#### Technical Details
+- Contract-based architecture for team invitation acceptance
+- Automatic discovery of custom `AcceptTeamInvitation` action
+- Falls back to default behavior if custom action doesn't exist
+- All stubs follow consistent formatting and include required imports
+
 ## v1.0.0 - 2025-11-18
 
 ### Release Notes - Enhanced Version

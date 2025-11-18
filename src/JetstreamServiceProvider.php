@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Jetstream\Actions\AcceptTeamInvitation;
 use Filament\Jetstream\Actions\AddTeamMember;
 use Filament\Jetstream\Actions\CreateTeam;
 use Filament\Jetstream\Actions\DeleteTeam;
@@ -11,6 +12,7 @@ use Filament\Jetstream\Actions\RemoveTeamMember;
 use Filament\Jetstream\Actions\UpdateTeamName;
 use Filament\Jetstream\Actions\UpdateUserProfileInformation;
 use Filament\Jetstream\Commands\InstallCommand;
+use Filament\Jetstream\Contracts\AcceptsTeamInvitations;
 use Filament\Jetstream\Contracts\AddsTeamMembers;
 use Filament\Jetstream\Contracts\CreatesTeams;
 use Filament\Jetstream\Contracts\DeletesTeams;
@@ -74,6 +76,7 @@ class JetstreamServiceProvider extends PackageServiceProvider
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/UpdateTeamName.php' => app_path('Actions/FilamentJetstream/UpdateTeamName.php'),
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteTeam.php' => app_path('Actions/FilamentJetstream/DeleteTeam.php'),
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteUser.php' => app_path('Actions/FilamentJetstream/DeleteUser.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/AcceptTeamInvitation.php' => app_path('Actions/FilamentJetstream/AcceptTeamInvitation.php'),
         ], 'filament-jetstream-actions');
 
         // Publish email templates
@@ -269,6 +272,12 @@ class JetstreamServiceProvider extends PackageServiceProvider
             $this->app->singleton(RemovesTeamMembers::class, \App\Actions\FilamentJetstream\RemoveTeamMember::class);
         } else {
             $this->app->singleton(RemovesTeamMembers::class, RemoveTeamMember::class);
+        }
+
+        if (class_exists(\App\Actions\FilamentJetstream\AcceptTeamInvitation::class)) {
+            $this->app->singleton(AcceptsTeamInvitations::class, \App\Actions\FilamentJetstream\AcceptTeamInvitation::class);
+        } else {
+            $this->app->singleton(AcceptsTeamInvitations::class, AcceptTeamInvitation::class);
         }
     }
 }

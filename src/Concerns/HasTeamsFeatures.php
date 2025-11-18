@@ -4,6 +4,7 @@ namespace Filament\Jetstream\Concerns;
 
 use Closure;
 use Filament\Facades\Filament;
+use Filament\Jetstream\Contracts\AcceptsTeamInvitations;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Models\Membership;
 use Filament\Jetstream\Models\Team;
@@ -52,9 +53,18 @@ trait HasTeamsFeatures
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
-                ? $this->defaultAcceptTeamInvitation($invitation)
-                : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
+            Route::get('/team-invitations/{invitation}', function ($invitation) {
+                // If custom closure is provided, use it (for backward compatibility)
+                if ($this->acceptTeamInvitation !== null) {
+                    return $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]);
+                }
+
+                // Otherwise, use contract binding (custom action or default)
+                /** @var AcceptsTeamInvitations $acceptTeamInvitationAction */
+                $acceptTeamInvitationAction = app(AcceptsTeamInvitations::class);
+
+                return $acceptTeamInvitationAction->accept($invitation);
+            })
                 ->middleware(['signed'])
                 ->name('team-invitations.accept'),
         ];
