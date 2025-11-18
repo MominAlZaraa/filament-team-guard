@@ -63,16 +63,16 @@ After installation, the package will automatically publish Action classes and em
 ## Features
 
 ##### 🔐 Authentication
-![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/login.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/main/art/login.jpeg)
 
 ##### 👤 User Profile
-![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/profile.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/main/art/profile.jpeg)
 
 ##### 👥 Team (Optional)
-![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/team.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/main/art/team.jpeg)
 
 ##### 🔑 API Tokens (Optional)
-![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/tokens.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/main/art/tokens.jpeg)
 
 ##### 🌍 Translation-ready
 
