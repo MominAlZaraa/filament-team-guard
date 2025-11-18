@@ -2,9 +2,9 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mominalzaraa/filament-jetstream?style=flat-square&logo=packagist)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
 [![Total Downloads](https://img.shields.io/packagist/dt/mominalzaraa/filament-jetstream?style=flat-square&logo=packagist)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
-[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=1.x&label=tests&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/run-tests.yml)
-[![Code Style](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/code-style.yml?branch=1.x&label=code%20style&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/code-style.yml)
-[![License](https://img.shields.io/packagist/l/mominalzaraa/filament-jetstream?style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/blob/1.x/LICENSE.md)
+[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=main&label=tests&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/run-tests.yml)
+[![Code Style](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/code-style.yml?branch=main&label=code%20style&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/code-style.yml)
+[![License](https://img.shields.io/packagist/l/mominalzaraa/filament-jetstream?style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/blob/main/LICENSE.md)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/mominalzaraa/filament-jetstream/php?style=flat-square&logo=php)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
 [![Sponsor](https://img.shields.io/github/sponsors/MominAlZaraa?style=flat-square&logo=github)](https://github.com/sponsors/MominAlZaraa)
 
