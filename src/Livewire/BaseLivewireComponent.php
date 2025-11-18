@@ -22,7 +22,7 @@ abstract class BaseLivewireComponent extends Component implements HasActions, Ha
     use InteractsWithForms;
     use WithRateLimiting;
 
-    public function authUser(): FilamentUser|Model|Authenticatable
+    public function authUser(): FilamentUser | Model | Authenticatable
     {
         /** @var FilamentUser $user */
         $user = Filament::auth()->user();

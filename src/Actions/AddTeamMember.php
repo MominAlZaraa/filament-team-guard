@@ -65,7 +65,7 @@ class AddTeamMember implements AddsTeamMembers
         $plugin = Jetstream::plugin();
 
         return array_filter([
-            'email' => ['required', 'email', 'exists:'.$userTable.',email'],
+            'email' => ['required', 'email', 'exists:' . $userTable . ',email'],
             'role' => ! empty($plugin->getTeamRolesAndPermissions())
                 ? ['required', 'string', new Role]
                 : null,

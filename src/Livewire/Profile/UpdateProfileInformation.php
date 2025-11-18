@@ -71,6 +71,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
 
                 // Replace the original Section with the new one
                 $formSchema[$index] = $newSection;
+
                 break;
             }
         }

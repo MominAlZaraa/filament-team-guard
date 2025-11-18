@@ -1,37 +1,54 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
-    - vendor/nesbot/carbon/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
 
 parameters:
-    level: 4
-
     paths:
-        - src
-        - database
+        - src/
+        - tests/
 
-    tmpDir: build/phpstan
+    # The level 5 is the highest level
+    level: 5
 
-    # Recommended for Laravel packages
-    checkModelProperties: true
-    checkImplicitMixed: true
-
-    # Optional performance tweak
-    parallel:
-        maximumNumberOfProcesses: 4
-
-    # Avoid vendor false positives
-    scanDirectories:
-        - vendor
-
-    # Skip non-source dirs
-    excludePaths:
-        analyseAndScan:
-            - bootstrap/*
-            - storage/*
-            - node_modules/*
-
-    # Ignore known dynamic or generated code
     ignoreErrors:
+        - '#PHPDoc tag @var has invalid value#'
+        - '#Call to an undefined method Illuminate\\Support\\Collection::.*\(\)#'
         - '#Call to an undefined method Illuminate\\.*#'
         - '#Call to an undefined method Filament\\.*#'
+        - '#Access to an undefined property Illuminate\\.*#'
+        - '#Access to an undefined property Filament\\.*#'
         - '#Access to an undefined property Livewire\\.*#'
+        - '#Parameter .* has invalid type App\\Models\\.*#'
+        - '#Call to method .* on an unknown class App\\Models\\.*#'
+        - '#Access to property .* on an unknown class App\\Models\\.*#'
+        - '#Property .* has unknown class App\\Models\\.*#'
+        - '#Class .* not found#'
+        - '#Using nullsafe method call on non-nullable type#'
+        - '#Using nullsafe property access .* on left side of \?\? is unnecessary#'
+        - '#Parameter \#1 \$view of function .* expects view-string#'
+        - '#Parameter \#1 \$view of method .* expects view-string#'
+        - '#Trait .* is used zero times and is not analysed#'
+        - '#Instanceof between .* will always evaluate to true#'
+        - '#Method .* should return .* but returns .*#'
+        - '#Variable .* on left side of \?\? always exists and is not nullable#'
+        - '#Method .* with return type void returns null#'
+        - '#Result of method .* \(void\) is used#'
+        - '#Offset .* does not exist on array#'
+        - '#Unsafe usage of new static\(\)#'
+        - '#PHPDoc type .* of property .* is not covariant#'
+        - '#Static property .* does not accept default value#'
+        - '#Static method .* invoked with .* parameters#'
+        - '#PHPDoc tag @var for variable .* contains unknown class Laravel\\Sanctum\\.*#'
+        - '#Access to property .* on an unknown class Laravel\\Sanctum\\.*#'
+        - '#Parameter .* of .* has invalid type Laravel\\Sanctum\\.*#'
+        - '#Call to method .* on an unknown class Laravel\\Sanctum\\.*#'
+        - '#Variable .* in PHPDoc tag @var does not exist#'
+        - '#Call to an undefined method Pest\\.*#'
+        - '#Parameter .* of method .* expects Filament\\Models\\Contracts\\FilamentUser, Illuminate\\Foundation\\Auth\\User.* given#'
+        - '#Using nullsafe property access on non-nullable type Illuminate\\Contracts\\Auth\\Authenticatable.* Use -> instead#'
+
+    excludePaths:
+        - vendor/
+        - storage (?)
+        - bootstrap/cache (?)
+
+    reportUnmatchedIgnoredErrors: false

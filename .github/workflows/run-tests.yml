@@ -2,9 +2,9 @@ name: run-tests
 
 on:
   push:
-    branches: [1.x, main]
+    branches: [main, 1.x]
   pull_request:
-    branches: [1.x, main]
+    branches: [main, 1.x]
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.4, 8.3, 8.2]
+        php: [8.4, 8.3]
         laravel: [12.*]
         stability: [prefer-stable]
         include:

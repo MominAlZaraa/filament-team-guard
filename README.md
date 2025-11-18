@@ -1,11 +1,16 @@
 # Filament Jetstream — Enhanced Laravel Starter Kit Built With Filament
 
-![Edit Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/banner.jpg)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mominalzaraa/filament-jetstream?style=flat-square&logo=packagist)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
+[![Total Downloads](https://img.shields.io/packagist/dt/mominalzaraa/filament-jetstream?style=flat-square&logo=packagist)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
+[![GitHub Tests](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=1.x&label=tests&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/run-tests.yml)
+[![Code Style](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/code-style.yml?branch=1.x&label=code%20style&style=flat-square&logo=github)](https://github.com/MominAlZaraa/filament-jetstream/actions/workflows/code-style.yml)
+[![License](https://img.shields.io/packagist/l/mominalzaraa/filament-jetstream?style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/blob/1.x/LICENSE.md)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/mominalzaraa/filament-jetstream/php?style=flat-square&logo=php)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
+[![Sponsor](https://img.shields.io/github/sponsors/MominAlZaraa?style=flat-square&logo=github)](https://github.com/sponsors/MominAlZaraa)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mominalzaraa/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=1.x&label=tests&style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/actions?query=workflow%3Arun-tests+branch%3A1.x)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/fix-php-code-styling.yml?branch=1.x&label=code%20style&style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3A1.x)
-[![Total Downloads](https://img.shields.io/packagist/dt/mominalzaraa/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
+![Filament Jetstream Banner](.github/plugin-banner.jpg)
+
+**Requirements**: PHP ^8.3|^8.4 | Laravel ^12.0 | Filament ^4.0
 
 ## About This Package
 

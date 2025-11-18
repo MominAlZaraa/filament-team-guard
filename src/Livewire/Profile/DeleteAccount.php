@@ -57,7 +57,7 @@ class DeleteAccount extends BaseLivewireComponent
     /**
      * Delete the current user.
      */
-    public function deleteAccount(): Redirector|RedirectResponse
+    public function deleteAccount(): Redirector | RedirectResponse
     {
         $user = filament()->auth()->user();
 

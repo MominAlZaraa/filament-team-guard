@@ -2,11 +2,11 @@ name: Fix PHP code style issues
 
 on:
   push:
-    branches: [1.x, main]
+    branches: [main, 1.x]
     paths:
       - '**.php'
   pull_request:
-    branches: [1.x, main]
+    branches: [main, 1.x]
     paths:
       - '**.php'
 
@@ -37,11 +37,19 @@ jobs:
       - name: Fix PHP code style issues
         run: vendor/bin/pint
 
+      - name: Stash any unstaged changes before pull
+        run: git stash --include-untracked || true
+        if: github.event_name == 'push'
+
       - name: Pull latest changes and rebase
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git pull origin ${{ github.ref_name }} --rebase
+          git pull origin main --rebase || git pull origin 1.x --rebase
+        if: github.event_name == 'push'
+
+      - name: Restore stashed changes
+        run: git stash pop || true
         if: github.event_name == 'push'
 
       - name: Commit changes

@@ -75,7 +75,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
         request()
             ->session()
             ->put([
-                'password_hash_'.Auth::getDefaultDriver() => filament()->auth()->user()->getAuthPassword(),
+                'password_hash_' . Auth::getDefaultDriver() => filament()->auth()->user()->getAuthPassword(),
             ]);
 
         Notification::make()

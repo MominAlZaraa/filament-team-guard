@@ -97,7 +97,7 @@ class UpdatePassword extends BaseLivewireComponent
         $user->save();
 
         if (request()->hasSession() && array_key_exists('password', $data)) {
-            request()->session()->put(['password_hash_'.Filament::getAuthGuard() => $data['password']]);
+            request()->session()->put(['password_hash_' . Filament::getAuthGuard() => $data['password']]);
         }
 
         $this->data['password'] = null;

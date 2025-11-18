@@ -43,7 +43,7 @@ class Register extends \Filament\Auth\Pages\Register
     /**
      * Accept a team invitation after user has been authenticated.
      */
-    protected function acceptTeamInvitationAfterAuth(string|int $invitationId): void
+    protected function acceptTeamInvitationAfterAuth(string | int $invitationId): void
     {
         $model = Jetstream::plugin()->teamInvitationModel();
         $invitation = $model::whereKey($invitationId)->with('team')->first();

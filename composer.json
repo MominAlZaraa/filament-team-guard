@@ -29,7 +29,7 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.3|^8.4",
         "filament/filament": "^4.0",
         "stephenjude/filament-two-factor-authentication": "^3.0",
         "illuminate/contracts": "^12.0",

@@ -57,39 +57,39 @@ class JetstreamServiceProvider extends PackageServiceProvider
             ->hasCommands([InstallCommand::class]);
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
         ], 'filament-jetstream-migrations');
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
 
         // Publish Action stubs
         $this->publishes([
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/UpdateUserProfileInformation.php' => app_path('Actions/FilamentJetstream/UpdateUserProfileInformation.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/InviteTeamMember.php' => app_path('Actions/FilamentJetstream/InviteTeamMember.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/AddTeamMember.php' => app_path('Actions/FilamentJetstream/AddTeamMember.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/RemoveTeamMember.php' => app_path('Actions/FilamentJetstream/RemoveTeamMember.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/CreateTeam.php' => app_path('Actions/FilamentJetstream/CreateTeam.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/UpdateTeamName.php' => app_path('Actions/FilamentJetstream/UpdateTeamName.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/DeleteTeam.php' => app_path('Actions/FilamentJetstream/DeleteTeam.php'),
-            __DIR__.'/../stubs/app/Actions/FilamentJetstream/DeleteUser.php' => app_path('Actions/FilamentJetstream/DeleteUser.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/UpdateUserProfileInformation.php' => app_path('Actions/FilamentJetstream/UpdateUserProfileInformation.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/InviteTeamMember.php' => app_path('Actions/FilamentJetstream/InviteTeamMember.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/AddTeamMember.php' => app_path('Actions/FilamentJetstream/AddTeamMember.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/RemoveTeamMember.php' => app_path('Actions/FilamentJetstream/RemoveTeamMember.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/CreateTeam.php' => app_path('Actions/FilamentJetstream/CreateTeam.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/UpdateTeamName.php' => app_path('Actions/FilamentJetstream/UpdateTeamName.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteTeam.php' => app_path('Actions/FilamentJetstream/DeleteTeam.php'),
+            __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteUser.php' => app_path('Actions/FilamentJetstream/DeleteUser.php'),
         ], 'filament-jetstream-actions');
 
         // Publish email templates
         $this->publishes([
-            __DIR__.'/../resources/views/emails/team-invitation.blade.php' => resource_path('views/vendor/filament-jetstream/emails/team-invitation.blade.php'),
+            __DIR__ . '/../resources/views/emails/team-invitation.blade.php' => resource_path('views/vendor/filament-jetstream/emails/team-invitation.blade.php'),
         ], 'filament-jetstream-email-templates');
 
         // Publish language files for customization
         // Publish to lang/{locale}/filament-jetstream.php for better locale organization
         $langFiles = [];
-        $langPath = __DIR__.'/../resources/lang';
+        $langPath = __DIR__ . '/../resources/lang';
 
         if (is_dir($langPath)) {
-            foreach (glob($langPath.'/*', GLOB_ONLYDIR) as $localeDir) {
+            foreach (glob($langPath . '/*', GLOB_ONLYDIR) as $localeDir) {
                 $locale = basename($localeDir);
-                $defaultFile = $localeDir.'/default.php';
+                $defaultFile = $localeDir . '/default.php';
 
                 if (file_exists($defaultFile)) {
                     $langFiles[$defaultFile] = $this->app->langPath("{$locale}/filament-jetstream.php");

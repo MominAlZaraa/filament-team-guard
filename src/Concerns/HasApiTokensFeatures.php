@@ -8,9 +8,9 @@ use Filament\Panel;
 
 trait HasApiTokensFeatures
 {
-    public Closure|bool $hasApiFeature = false;
+    public Closure | bool $hasApiFeature = false;
 
-    public Closure|array|null $apiTokenPermissions = [];
+    public Closure | array | null $apiTokenPermissions = [];
 
     public ?string $apiMenuItemLabel = null;
 
@@ -21,7 +21,7 @@ trait HasApiTokensFeatures
         return $this->evaluate($this->hasApiFeature) === true;
     }
 
-    public function apiTokens(Closure|bool $condition = true, Closure|array|null $permissions = null, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
+    public function apiTokens(Closure | bool $condition = true, Closure | array | null $permissions = null, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
     {
         $this->hasApiFeature = $condition;
 
@@ -64,7 +64,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenUrl(Panel $panel): ?string
     {
-        return $panel->getUrl().'/tokens';
+        return $panel->getUrl() . '/tokens';
     }
 
     public function validPermissions(array $permissions): array
