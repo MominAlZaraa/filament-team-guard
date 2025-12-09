@@ -3,7 +3,7 @@
         'name' => 'mominalzaraa/filament-jetstream',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8cbac75d4d784fe1e4e69eda5ba5de03bdf2e01f',
+        'reference' => 'd9f7db6e47560b6bf1d85a5d5cdad14979cdb360',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -799,7 +799,7 @@
         'mominalzaraa/filament-jetstream' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8cbac75d4d784fe1e4e69eda5ba5de03bdf2e01f',
+            'reference' => 'd9f7db6e47560b6bf1d85a5d5cdad14979cdb360',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
