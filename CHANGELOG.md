@@ -4,11 +4,46 @@ All notable changes to `mominalzaraa/filament-jetstream` will be documented in t
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## 1.0.2 - 2025-12-09
+
+### v1.0.2 - 2025-12-10
+
+#### Enhanced Avatar Generation with Context-Aware Naming
+
+##### Enhanced
+
+- **Context-aware avatar generation** - Default profile photo avatars now use `getFilamentName()` method when available, ensuring avatar initials match the context-aware display names shown throughout the Filament UI
+- Avatar generation now respects custom naming logic (e.g., "Mr. John Doe", "Ms. Jane Doe") instead of using only the raw `name` column
+- Falls back gracefully to `$this->name` if `getFilamentName()` method doesn't exist, maintaining backward compatibility
+
+##### Technical Details
+
+- `HasProfilePhoto::defaultProfilePhotoUrl()` now checks for `getFilamentName()` method before generating avatar initials
+- Avatar initials are generated from the full context-aware name (including titles/prefixes)
+- Maintains compatibility with models that don't implement `getFilamentName()`
+
+##### Benefits
+
+- **Consistency** - Avatar initials now match the display names shown in Filament UI
+- **Context-Aware** - Supports applications with custom naming logic (e.g., gender-based titles, role-based prefixes)
+- **Backward Compatible** - Works seamlessly with existing implementations
+- **Better UX** - Users see consistent naming across all UI elements
+
+##### Example
+
+For a user with `getFilamentName()` returning "Mr. John Doe":
+
+- **Before:** Avatar shows initials "JD" (from `name` column: "John Doe")
+- **After:** Avatar shows initials "MJD" (from context-aware name: "Mr. John Doe")
+
+This ensures the avatar reflects the same context-aware naming used throughout the application.
+
 ## v1.0.1 - 2025-01-18
 
 ### Enhanced Team Invitation Acceptance & Improved Action Customization
 
 #### Added
+
 - `AcceptsTeamInvitations` contract interface for team invitation acceptance
 - `AcceptTeamInvitation` base action class implementing the contract
 - `AcceptTeamInvitation` publishable stub with commented default code examples
@@ -16,18 +51,21 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 - Enhanced all action stubs with commented default code examples
 
 #### Enhanced
+
 - `HasTeamsFeatures` trait now uses contract binding for team invitation acceptance
 - `JetstreamServiceProvider` registers `AcceptsTeamInvitations` contract
 - All action stubs include comprehensive commented examples showing customization patterns
 - Improved code consistency and documentation across all stubs
 
 #### Improved
+
 - Team invitation acceptance is now fully customizable like other actions
 - Backward compatible with closure-based customization
 - Cleaner stub format with generic examples (no project-specific code)
 - Better developer experience with ready-to-use code snippets
 
 #### Technical Details
+
 - Contract-based architecture for team invitation acceptance
 - Automatic discovery of custom `AcceptTeamInvitation` action
 - Falls back to default behavior if custom action doesn't exist
@@ -76,6 +114,7 @@ All action classes are now publishable for complete customization:
 ```bash
 php artisan vendor:publish --tag=filament-jetstream-actions
 
+
 ```
 **Available Action Stubs:**
 
@@ -109,6 +148,7 @@ public function getFieldComponents(): array
     ];
 }
 
+
 ```
 ###### 5. **Publishable Language Files**
 
@@ -116,6 +156,7 @@ Language files now publish to `lang/{locale}/filament-jetstream.php` for better 
 
 ```bash
 php artisan vendor:publish --tag=filament-jetstream-lang
+
 
 ```
 **Features:**
@@ -133,6 +174,7 @@ php artisan vendor:publish --tag=filament-jetstream-lang
 
 ```bash
 php artisan vendor:publish --tag=filament-jetstream-email-templates
+
 
 ```
 ###### 7. **Custom Validation Rules**
@@ -209,6 +251,7 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
    composer remove stephenjude/filament-jetstream
    composer require nominalzaraa/filament-jetstream
    
+   
    ```
 2. **Publish New Components**
    
@@ -216,6 +259,7 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
    php artisan vendor:publish --tag=filament-jetstream-actions
    php artisan vendor:publish --tag=filament-jetstream-lang
    php artisan vendor:publish --tag=filament-jetstream-email-templates
+   
    
    ```
 3. **Update Language Files**
