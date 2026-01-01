@@ -16,9 +16,12 @@ class UpdateTeamName extends BaseLivewireComponent
 
     public Team $team;
 
+    public int $teamId;
+
     public function mount(Team $team): void
     {
         $this->team = $team;
+        $this->teamId = $team->id;
 
         $this->form->fill($team->only(['name']));
     }
@@ -53,9 +56,14 @@ class UpdateTeamName extends BaseLivewireComponent
 
         $data = $this->form->getState();
 
-        $team->forceFill([
+        // Always refresh the team from the database using the stored team ID
+        // This ensures we have a fresh instance that exists in the database
+        $team = get_class($this->team)::findOrFail($this->teamId);
+
+        // Update the team name using update() which ensures we're updating an existing record
+        $team->update([
             'name' => $data['name'],
-        ])->save();
+        ]);
 
         $this->sendNotification();
     }

@@ -23,8 +23,13 @@ class UpdateTeamName implements UpdatesTeamNames
             'name' => ['required', 'string', 'max:255'],
         ])->validateWithBag('updateTeamName');
 
-        $team->forceFill([
+        // Find the team by ID to ensure we have a fresh instance that exists in the database
+        // Use get_class() to support custom team models
+        $team = get_class($team)::findOrFail($team->id);
+
+        // Update the team name using update() which ensures we're updating an existing record
+        $team->update([
             'name' => $input['name'],
-        ])->save();
+        ]);
     }
 }

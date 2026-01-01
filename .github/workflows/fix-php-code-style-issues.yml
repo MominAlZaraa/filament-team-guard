@@ -37,6 +37,12 @@ jobs:
       - name: Fix PHP code style issues
         run: vendor/bin/pint
 
+      - name: Clean up vendor directory from git
+        run: |
+          git rm -r --cached vendor/ 2>/dev/null || true
+          git restore --staged vendor/ 2>/dev/null || true
+        if: github.event_name == 'push'
+
       - name: Stash any unstaged changes before pull
         run: git stash --include-untracked || true
         if: github.event_name == 'push'
@@ -53,7 +59,7 @@ jobs:
         if: github.event_name == 'push'
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: Fix styling
         if: github.event_name == 'push'

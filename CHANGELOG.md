@@ -4,32 +4,30 @@ All notable changes to `mominalzaraa/filament-jetstream` will be documented in t
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
-## 1.0.2 - 2025-12-09
+## v1.0.2 - 2025-12-10
 
-### v1.0.2 - 2025-12-10
+### Enhanced Avatar Generation with Context-Aware Naming
 
-#### Enhanced Avatar Generation with Context-Aware Naming
-
-##### Enhanced
+#### Enhanced
 
 - **Context-aware avatar generation** - Default profile photo avatars now use `getFilamentName()` method when available, ensuring avatar initials match the context-aware display names shown throughout the Filament UI
 - Avatar generation now respects custom naming logic (e.g., "Mr. John Doe", "Ms. Jane Doe") instead of using only the raw `name` column
 - Falls back gracefully to `$this->name` if `getFilamentName()` method doesn't exist, maintaining backward compatibility
 
-##### Technical Details
+#### Technical Details
 
 - `HasProfilePhoto::defaultProfilePhotoUrl()` now checks for `getFilamentName()` method before generating avatar initials
 - Avatar initials are generated from the full context-aware name (including titles/prefixes)
 - Maintains compatibility with models that don't implement `getFilamentName()`
 
-##### Benefits
+#### Benefits
 
 - **Consistency** - Avatar initials now match the display names shown in Filament UI
 - **Context-Aware** - Supports applications with custom naming logic (e.g., gender-based titles, role-based prefixes)
 - **Backward Compatible** - Works seamlessly with existing implementations
 - **Better UX** - Users see consistent naming across all UI elements
 
-##### Example
+#### Example
 
 For a user with `getFilamentName()` returning "Mr. John Doe":
 
@@ -37,6 +35,32 @@ For a user with `getFilamentName()` returning "Mr. John Doe":
 - **After:** Avatar shows initials "MJD" (from context-aware name: "Mr. John Doe")
 
 This ensures the avatar reflects the same context-aware naming used throughout the application.
+
+## v1.0.3 - 2026-01-01
+
+### Fixed Team Name Update Serialization Issue
+
+#### Fixed
+- **UpdateTeamName Livewire Component** - Fixed issue where updating team name attempted to INSERT a new team instead of UPDATE existing team
+  - Root cause: Team model lost its "exists" state after Livewire serialization, causing `forceFill()->save()` to attempt INSERT
+  - Solution: Store `teamId` separately as a public property to avoid serialization issues
+  - Solution: Use `findOrFail($teamId)` to get fresh instance from database before updating
+  - Solution: Use `update()` method instead of `forceFill()->save()` to ensure UPDATE operation
+
+- **UpdateTeamName Action Class** - Applied same fix for consistency
+  - Uses `findOrFail()` to get fresh team instance
+  - Uses `update()` method to ensure UPDATE operation
+
+#### Technical Details
+- Team model serialization through Livewire can cause the model to lose its "exists" state
+- Storing team ID separately as a simple integer property ensures reliable serialization
+- Always refreshing from database using `findOrFail()` ensures we have a valid existing record
+- Using `update()` method is safer than `forceFill()->save()` for updating existing records
+
+#### Impact
+- Team name updates now correctly UPDATE existing teams instead of attempting to INSERT
+- Prevents database errors: "Field 'user_id' doesn't have a default value"
+- Prevents 404 errors when team model loses its state after serialization 1b5c00c2 (Fix: Team name update serialization issue (v1.0.2))
 
 ## v1.0.1 - 2025-01-18
 
