@@ -4,6 +4,19 @@ All notable changes to `mominalzaraa/filament-jetstream` will be documented in t
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v1.0.4 - 2026-01-01
+
+### 🐛 Bug Fixes
+
+**Translation Loader Custom Locale Merging Issue**
+
+- Fixed custom translation keys in `lang/{locale}/filament-jetstream.php` not being merged with package translations
+- Root cause: Translation loader extension was registered too late in the service provider lifecycle (`packageBooted()`), causing it to miss service resolution
+- Solution: Moved `registerCustomTranslationPaths()` from `packageBooted()` to `packageRegistered()` to ensure translation loader extension is registered before service resolution
+- Improved merging logic to use `array_merge_recursive()` followed by `array_replace_recursive()` to ensure custom keys are added even if they don't exist in package translations, while still allowing custom translations to override package defaults
+- Prevents translation keys like `filament-jetstream::default.form.surname.label` from displaying as raw keys instead of translated text
+- Enables developers to add custom translation keys to their application's locale files that will properly merge with and override package translations
+
 ## v1.0.2 - 2025-12-10
 
 ### Enhanced Avatar Generation with Context-Aware Naming
@@ -41,23 +54,29 @@ This ensures the avatar reflects the same context-aware naming used throughout t
 ### Fixed Team Name Update Serialization Issue
 
 #### Fixed
+
 - **UpdateTeamName Livewire Component** - Fixed issue where updating team name attempted to INSERT a new team instead of UPDATE existing team
+  
   - Root cause: Team model lost its "exists" state after Livewire serialization, causing `forceFill()->save()` to attempt INSERT
   - Solution: Store `teamId` separately as a public property to avoid serialization issues
   - Solution: Use `findOrFail($teamId)` to get fresh instance from database before updating
   - Solution: Use `update()` method instead of `forceFill()->save()` to ensure UPDATE operation
-
+  
 - **UpdateTeamName Action Class** - Applied same fix for consistency
+  
   - Uses `findOrFail()` to get fresh team instance
   - Uses `update()` method to ensure UPDATE operation
+  
 
 #### Technical Details
+
 - Team model serialization through Livewire can cause the model to lose its "exists" state
 - Storing team ID separately as a simple integer property ensures reliable serialization
 - Always refreshing from database using `findOrFail()` ensures we have a valid existing record
 - Using `update()` method is safer than `forceFill()->save()` for updating existing records
 
 #### Impact
+
 - Team name updates now correctly UPDATE existing teams instead of attempting to INSERT
 - Prevents database errors: "Field 'user_id' doesn't have a default value"
 - Prevents 404 errors when team model loses its state after serialization 1b5c00c2 (Fix: Team name update serialization issue (v1.0.2))
@@ -139,6 +158,7 @@ All action classes are now publishable for complete customization:
 php artisan vendor:publish --tag=filament-jetstream-actions
 
 
+
 ```
 **Available Action Stubs:**
 
@@ -173,6 +193,7 @@ public function getFieldComponents(): array
 }
 
 
+
 ```
 ###### 5. **Publishable Language Files**
 
@@ -180,6 +201,7 @@ Language files now publish to `lang/{locale}/filament-jetstream.php` for better 
 
 ```bash
 php artisan vendor:publish --tag=filament-jetstream-lang
+
 
 
 ```
@@ -198,6 +220,7 @@ php artisan vendor:publish --tag=filament-jetstream-lang
 
 ```bash
 php artisan vendor:publish --tag=filament-jetstream-email-templates
+
 
 
 ```
@@ -276,6 +299,7 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
    composer require nominalzaraa/filament-jetstream
    
    
+   
    ```
 2. **Publish New Components**
    
@@ -283,6 +307,7 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
    php artisan vendor:publish --tag=filament-jetstream-actions
    php artisan vendor:publish --tag=filament-jetstream-lang
    php artisan vendor:publish --tag=filament-jetstream-email-templates
+   
    
    
    ```
