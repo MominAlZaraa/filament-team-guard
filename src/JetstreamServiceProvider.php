@@ -106,12 +106,12 @@ class JetstreamServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->registerContracts();
+        $this->registerCustomTranslationPaths();
     }
 
     public function packageBooted()
     {
         $this->registerLivewireComponents();
-        $this->registerCustomTranslationPaths();
     }
 
     /**
@@ -121,6 +121,7 @@ class JetstreamServiceProvider extends PackageServiceProvider
     protected function registerCustomTranslationPaths(): void
     {
         // Extend the translation.loader service (FileLoader) instead of Translator
+        // Must be registered in packageRegistered() to ensure it runs before service resolution
         $this->app->extend('translation.loader', function ($loader, $app) {
             return new class($loader, $app) implements \Illuminate\Contracts\Translation\Loader
             {
@@ -133,6 +134,9 @@ class JetstreamServiceProvider extends PackageServiceProvider
                 {
                     // Intercept filament-jetstream::default namespace
                     if ($namespace === 'filament-jetstream' && $group === 'default') {
+                        // Always load package translations first
+                        $packageTranslations = $this->originalLoader->load($locale, $group, $namespace);
+
                         $customPath = $this->app->langPath("{$locale}/filament-jetstream.php");
 
                         // If custom file exists, merge with package translations
@@ -141,11 +145,11 @@ class JetstreamServiceProvider extends PackageServiceProvider
                                 $customTranslations = require $customPath;
 
                                 if (is_array($customTranslations)) {
-                                    // Load package translations
-                                    $packageTranslations = $this->originalLoader->load($locale, $group, $namespace);
+                                    // Merge: custom overrides package
+                                    // First merge to ensure all keys are included, then replace to override
+                                    $merged = array_merge_recursive($packageTranslations ?? [], $customTranslations);
 
-                                    // Merge: custom overrides package (using array_replace_recursive for nested arrays)
-                                    return array_replace_recursive($packageTranslations ?? [], $customTranslations);
+                                    return array_replace_recursive($merged, $customTranslations);
                                 }
                             } catch (\Throwable $e) {
                                 // If custom file fails, fall back to package translations
@@ -158,6 +162,9 @@ class JetstreamServiceProvider extends PackageServiceProvider
                                 }
                             }
                         }
+
+                        // Return package translations if no custom file or if custom file failed
+                        return $packageTranslations ?? [];
                     }
 
                     // For all other cases, use original loader
