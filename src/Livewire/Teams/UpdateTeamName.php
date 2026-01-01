@@ -38,7 +38,7 @@ class UpdateTeamName extends BaseLivewireComponent
                 Actions::make([
                     Action::make('save')
                         ->label(__('filament-jetstream::default.action.save.label'))
-                        ->action(fn () => $this->updateTeamName($this->team)),
+                        ->action(fn() => $this->updateTeamName($this->team)),
                 ])->alignEnd(),
             ])
             ->statePath('data');
