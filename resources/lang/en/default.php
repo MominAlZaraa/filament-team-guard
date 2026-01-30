@@ -4,15 +4,15 @@
  * Filament Jetstream Language File
  *
  * This file contains all translations for the Filament Jetstream package.
- * When published, this file will be located at: lang/{locale}/filament-jetstream.php
- * (e.g., lang/en/filament-jetstream.php, lang/fr/filament-jetstream.php)
+ * When published, this file will be located at: lang/{locale}/filament-team-guard.php
+ * (e.g., lang/en/filament-team-guard.php, lang/fr/filament-team-guard.php)
  *
  * PUBLISHING:
  * -----------
  * To customize translations, publish this file:
- * php artisan vendor:publish --tag=filament-jetstream-lang
+ * php artisan vendor:publish --tag=filament-team-guard-lang
  *
- * The published file will be at: lang/{locale}/filament-jetstream.php
+ * The published file will be at: lang/{locale}/filament-team-guard.php
  * This locale-first structure makes it easier to manage multiple languages.
  *
  * ADDING CUSTOM FIELDS:
@@ -31,19 +31,19 @@
  *
  * Then use it in your Action class:
  * TextInput::make('surname')
- *     ->label(__('filament-jetstream::default.form.surname.label'))
+ *     ->label(__('filament-team-guard::default.form.surname.label'))
  *
  * CUSTOMIZING EXISTING TRANSLATIONS:
  * -----------------------------------
  * Simply modify any value below to change the displayed text.
  * The package will automatically use your published translations from
- * lang/{locale}/filament-jetstream.php, falling back to package translations
+ * lang/{locale}/filament-team-guard.php, falling back to package translations
  * for any missing keys.
  *
  * ADDING NEW LANGUAGES:
  * ---------------------
  * 1. Publish the language files
- * 2. Copy lang/en/filament-jetstream.php to lang/your-locale/filament-jetstream.php
+ * 2. Copy lang/en/filament-team-guard.php to lang/your-locale/filament-team-guard.php
  * 3. Translate all values
  * 4. The package will automatically use the correct locale
  *

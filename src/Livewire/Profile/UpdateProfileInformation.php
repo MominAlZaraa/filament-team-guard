@@ -44,7 +44,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                 // Get Section properties from the action class methods
                 $sectionTitle = method_exists($action, 'getSectionHeading')
                     ? $action->getSectionHeading()
-                    : __('filament-jetstream::default.update_profile_information.section.title');
+                    : __('filament-team-guard::default.update_profile_information.section.title');
                 $sectionDescription = method_exists($action, 'getSectionDescription')
                     ? $action->getSectionDescription()
                     : $component->getDescription();
@@ -62,7 +62,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                 $fieldComponents = $this->getFieldComponentsFromAction($action);
                 $fieldComponents[] = Actions::make([
                     Action::make('save')
-                        ->label(__('filament-jetstream::default.action.save.label'))
+                        ->label(__('filament-team-guard::default.action.save.label'))
                         ->submit('updateProfile'),
                 ]);
 
@@ -93,7 +93,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
 
         // Otherwise, get the schema and extract fields from the Section
         $formSchema = $action->getFormSchema();
-        $section = $formSchema[0] ?? null;
+        $section = function_exists('array_first') ? array_first($formSchema) : ($formSchema[0] ?? null);
 
         if ($section instanceof Section) {
             // Use reflection to get the schema property
@@ -141,6 +141,6 @@ class UpdateProfileInformation extends BaseLivewireComponent
 
     public function render()
     {
-        return view('filament-jetstream::livewire.profile.update-profile-information');
+        return view('filament-team-guard::livewire.profile.update-profile-information');
     }
 }

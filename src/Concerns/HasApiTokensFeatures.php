@@ -36,7 +36,7 @@ trait HasApiTokensFeatures
 
     public function getApiMenuItemLabel(): string
     {
-        return $this->evaluate($this->apiMenuItemLabel) ?? __('filament-jetstream::default.menu_item.api_tokens.label');
+        return $this->evaluate($this->apiMenuItemLabel) ?? __('filament-team-guard::default.menu_item.api_tokens.label');
     }
 
     public function getApiMenuItemIcon(): string

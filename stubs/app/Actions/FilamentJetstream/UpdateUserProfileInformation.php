@@ -20,7 +20,7 @@ class UpdateUserProfileInformation extends BaseUpdateUserProfileInformation
       {
           return [
               FileUpload::make('profile_photo_path')
-                  ->label(__('filament-jetstream::default.form.profile_photo.label'))
+                  ->label(__('filament-team-guard::default.form.profile_photo.label'))
                   ->avatar()
                   ->image()
                   ->imageEditor()
@@ -30,12 +30,12 @@ class UpdateUserProfileInformation extends BaseUpdateUserProfileInformation
                   ->disk(fn (): string => Jetstream::plugin()?->profilePhotoDisk())
                   ->visible(fn (): bool => Jetstream::plugin()?->managesProfilePhotos()),
               TextInput::make('name')
-                  ->label(__('filament-jetstream::default.form.name.label'))
+                  ->label(__('filament-team-guard::default.form.name.label'))
                   ->string()
                   ->maxLength(255)
                   ->required(),
               TextInput::make('email')
-                  ->label(__('filament-jetstream::default.form.email.label'))
+                  ->label(__('filament-team-guard::default.form.email.label'))
                   ->email()
                   ->required()
                   ->unique(get_class(Filament::auth()->user()), ignorable: Filament::auth()->user()),

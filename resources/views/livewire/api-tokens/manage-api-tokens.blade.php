@@ -1,9 +1,9 @@
 <x-filament::section aside>
     <x-slot name="heading">
-        {{ __('filament-jetstream::default.manage_api_tokens.section.title') }}
+        {{ __('filament-team-guard::default.manage_api_tokens.section.title') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('filament-jetstream::default.manage_api_tokens.section.description') }}
+        {{ __('filament-team-guard::default.manage_api_tokens.section.description') }}
     </x-slot>
 
     {{ $this->table }}

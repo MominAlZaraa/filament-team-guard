@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class InstallCommand extends Command
 {
-    public $signature = 'filament-jetstream:install {--teams : Indicates if team support should be installed}
+    public $signature = 'filament-team-guard:install {--teams : Indicates if team support should be installed}
                                               {--api : Indicates if API support should be installed}';
 
     public $description = 'Install the Laravel Jetstream and Filament Panel components.';
@@ -68,7 +68,7 @@ class InstallCommand extends Command
 
         // Setup Team
         if ($this->option('teams')) {
-            $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations']);
+            $this->call('vendor:publish', ['--tag' => 'filament-team-guard-team-migrations']);
 
             // Factories
             copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
@@ -141,33 +141,30 @@ class InstallCommand extends Command
         $this->call('vendor:publish', ['--tag' => 'passkeys-migrations']);
 
         // Publish jetstream migrations
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
-
-        // Publish 2FA migrations
-        $this->call('vendor:publish', ['--tag' => 'filament-two-factor-authentication-migrations']);
+        $this->call('vendor:publish', ['--tag' => 'filament-team-guard-migrations']);
 
         // Publish Action stubs for customization
         (new Filesystem)->ensureDirectoryExists(app_path('Actions/FilamentJetstream'));
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-actions']);
+        $this->call('vendor:publish', ['--tag' => 'filament-team-guard-actions']);
 
         // Publish email templates for customization
-        (new Filesystem)->ensureDirectoryExists(resource_path('views/vendor/filament-jetstream/emails'));
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-email-templates']);
+        (new Filesystem)->ensureDirectoryExists(resource_path('views/vendor/filament-team-guard/emails'));
+        $this->call('vendor:publish', ['--tag' => 'filament-team-guard-email-templates']);
 
         // Publish language files for customization
         // Ensure locale directories exist (e.g., lang/en, lang/fr, etc.)
         $langPath = $this->laravel->langPath();
         $defaultLocale = $this->laravel->getLocale();
         (new Filesystem)->ensureDirectoryExists($langPath . '/' . $defaultLocale);
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-lang']);
+        $this->call('vendor:publish', ['--tag' => 'filament-team-guard-lang']);
 
         // Link local storage
         $this->call('storage:link');
 
         $this->info('DONE: Filament Jetstream starter kit installed successfully.');
         $this->info('Action classes have been published to app/Actions/FilamentJetstream/ for customization.');
-        $this->info('Email templates have been published to resources/views/vendor/filament-jetstream/emails/ for customization.');
-        $this->info('Language files have been published to lang/vendor/filament-jetstream/ for customization.');
+        $this->info('Email templates have been published to resources/views/vendor/filament-team-guard/emails/ for customization.');
+        $this->info('Language files have been published to lang/vendor/filament-team-guard/ for customization.');
 
         return self::SUCCESS;
     }

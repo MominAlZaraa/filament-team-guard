@@ -46,7 +46,7 @@ class InviteTeamMember implements InvitesTeamMembers
             'email' => $email,
             'role' => $role,
         ], $this->rules($team), [
-            'email.unique' => __('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'),
+            'email.unique' => __('filament-team-guard::default.action.add_team_member.error_message.email_already_invited'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
         )->validateWithBag('addTeamMember');
@@ -84,7 +84,7 @@ class InviteTeamMember implements InvitesTeamMembers
             if (method_exists($team, 'hasUserWithEmail') && $team->hasUserWithEmail($email)) {
                 $validator->errors()->add(
                     'email',
-                    __('filament-jetstream::default.action.add_team_member.error_message.email_already_invited')
+                    __('filament-team-guard::default.action.add_team_member.error_message.email_already_invited')
                 );
             }
         };

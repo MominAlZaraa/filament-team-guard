@@ -49,7 +49,7 @@ class TeamInvitation extends Mailable
         $registerUrl = $canRegister ? $panel->getRegistrationUrl() : null;
 
         return $this->subject(__('Team Invitation'))
-            ->markdown('filament-jetstream::emails.team-invitation', [
+            ->markdown('filament-team-guard::emails.team-invitation', [
                 'acceptUrl' => $acceptUrl,
                 'teamName' => $this->invitation->team?->name,
                 'canRegister' => $canRegister,

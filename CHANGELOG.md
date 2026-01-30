@@ -1,8 +1,35 @@
 # Changelog
 
-All notable changes to `mominalzaraa/filament-jetstream` will be documented in this file.
+All notable changes to `mominalzaraa/filament-team-guard` will be documented in this file.
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
+
+
+## v2.0.0 - 2026-01-30
+
+### Added
+
+- **Embedded 2FA & passkeys** — TOTP, recovery codes, and [Spatie Laravel Passkeys](https://github.com/spatie/laravel-passkeys) integrated into Filament panels (challenge/recovery pages, profile 2FA/passkey UI). New `Filament\Jetstream\TwoFactor` namespace: `TwoFactorAuthenticatable`, actions (enable/confirm/disable 2FA, regenerate recovery codes), middleware, `TwoFactorAuthenticationPlugin`. Translation file `resources/lang/en/two_factor.php`. No dependency on `stephenjude/filament-two-factor-authentication`.
+- **Cloudflare Turnstile** — Optional `->turnstile()` on auth (login, register, password reset, email verification) and on 2FA challenge/recovery pages via [njoguamos/laravel-turnstile](https://github.com/njoguamos/laravel-turnstile). Token passed as action parameter for reliable server-side validation.
+- **PHP 8.5** — Composer allows PHP `^8.5`. Internal use of `array_first()` where available (PHP 8.5+), with fallbacks for 8.3/8.4.
+- **2FA event dispatching** — Two-factor events extend base with `Dispatchable`, `InteractsWithSockets`, `SerializesModels` so `::dispatch()` works.
+- **README** — Version support table; "Package development" (vendor not distributed, no Filament duplication); features list (Turnstile, 2FA/passkeys).
+- **.gitattributes** — `/vendor export-ignore` so dist archives never include vendor.
+
+### Changed (Breaking)
+
+- **Filament** — Requirement `^4.0` → `^5.0` (Livewire ^4.0, Tailwind ^4.0). v2.x is Filament 5 only; use [v1.x](https://github.com/MominAlZaraa/filament-team-guard/releases) for Filament 4.
+- **Livewire v4** — Component names use **dot notation** (e.g. `filament-team-guard.livewire.profile.update-profile-information`) instead of `::` so Finder resolves registered aliases.
+- **2FA** — Removed `stephenjude/filament-two-factor-authentication`; all 2FA in-package. `filament-team-guard:install` no longer publishes `filament-two-factor-authentication-migrations`; uses Jetstream migrations + `passkeys-migrations`.
+- **2FA Challenge/Recovery** — Translation key `filament-team-guard::form.code.hint` → `filament-team-guard::default.form.code.hint`. Redirects use Livewire `redirectIntended()` (no `redirect()->intended()` return).
+- **README** — Compact layout; installation, features, customization, and config summarized.
+
+### Credits
+
+- 2FA implementation adapted from [stephenjude/filament-two-factor-authentication](https://github.com/stephenjude/filament-two-factor-authentication) by Stephen Jude; attribution in classes and lang.
+- Upgrading from v1.x: use Filament ^5.0 and Livewire ^4.0; remove `stephenjude/filament-two-factor-authentication`; keep `InteractsWIthProfile` on User (it uses embedded 2FA).
+
+---
 
 ## v1.0.4 - 2026-01-01
 
@@ -10,11 +37,11 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 
 **Translation Loader Custom Locale Merging Issue**
 
-- Fixed custom translation keys in `lang/{locale}/filament-jetstream.php` not being merged with package translations
+- Fixed custom translation keys in `lang/{locale}/filament-team-guard.php` not being merged with package translations
 - Root cause: Translation loader extension was registered too late in the service provider lifecycle (`packageBooted()`), causing it to miss service resolution
 - Solution: Moved `registerCustomTranslationPaths()` from `packageBooted()` to `packageRegistered()` to ensure translation loader extension is registered before service resolution
 - Improved merging logic to use `array_merge_recursive()` followed by `array_replace_recursive()` to ensure custom keys are added even if they don't exist in package translations, while still allowing custom translations to override package defaults
-- Prevents translation keys like `filament-jetstream::default.form.surname.label` from displaying as raw keys instead of translated text
+- Prevents translation keys like `filament-team-guard::default.form.surname.label` from displaying as raw keys instead of translated text
 - Enables developers to add custom translation keys to their application's locale files that will properly merge with and override package translations
 
 ## v1.0.2 - 2025-12-10
@@ -155,7 +182,7 @@ All actions now use contracts/interfaces, matching Laravel Jetstream's architect
 All action classes are now publishable for complete customization:
 
 ```bash
-php artisan vendor:publish --tag=filament-jetstream-actions
+php artisan vendor:publish --tag=filament-team-guard-actions
 
 
 
@@ -187,7 +214,7 @@ public function getFieldComponents(): array
     return [
         // ... existing fields ...
         TextInput::make('surname')
-            ->label(__('filament-jetstream::default.form.surname.label'))
+            ->label(__('filament-team-guard::default.form.surname.label'))
             ->required(),
     ];
 }
@@ -197,10 +224,10 @@ public function getFieldComponents(): array
 ```
 ###### 5. **Publishable Language Files**
 
-Language files now publish to `lang/{locale}/filament-jetstream.php` for better locale organization:
+Language files now publish to `lang/{locale}/filament-team-guard.php` for better locale organization:
 
 ```bash
-php artisan vendor:publish --tag=filament-jetstream-lang
+php artisan vendor:publish --tag=filament-team-guard-lang
 
 
 
@@ -219,7 +246,7 @@ php artisan vendor:publish --tag=filament-jetstream-lang
 - Publishable for customization:
 
 ```bash
-php artisan vendor:publish --tag=filament-jetstream-email-templates
+php artisan vendor:publish --tag=filament-team-guard-email-templates
 
 
 
@@ -296,7 +323,7 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
    
    ```bash
    composer remove stephenjude/filament-jetstream
-   composer require nominalzaraa/filament-jetstream
+   composer require mominalzaraa/filament-team-guard
    
    
    
@@ -304,17 +331,17 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
 2. **Publish New Components**
    
    ```bash
-   php artisan vendor:publish --tag=filament-jetstream-actions
-   php artisan vendor:publish --tag=filament-jetstream-lang
-   php artisan vendor:publish --tag=filament-jetstream-email-templates
+   php artisan vendor:publish --tag=filament-team-guard-actions
+   php artisan vendor:publish --tag=filament-team-guard-lang
+   php artisan vendor:publish --tag=filament-team-guard-email-templates
    
    
    
    ```
 3. **Update Language Files**
    
-   - Old location: `lang/vendor/filament-jetstream/{locale}/default.php`
-   - New location: `lang/{locale}/filament-jetstream.php`
+   - Old location: `lang/vendor/filament-team-guard/{locale}/default.php`
+   - New location: `lang/{locale}/filament-team-guard.php`
    - Custom translations will automatically merge
    
 4. **Team Invitation Flow Changes**
@@ -343,8 +370,8 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
 
 ##### 2. Language File Location
 
-**Previous:** `lang/vendor/filament-jetstream/{locale}/default.php`
-**New:** `lang/{locale}/filament-jetstream.php`
+**Previous:** `lang/vendor/filament-team-guard/{locale}/default.php`
+**New:** `lang/{locale}/filament-team-guard.php`
 
 **Migration:** Copy your custom translations to the new location. The custom translation loader will automatically merge them.
 
@@ -381,9 +408,9 @@ php artisan vendor:publish --tag=filament-jetstream-email-templates
 
 #### 🔗 Resources
 
-- **Repository:** https://github.com/MominAlZaraa/filament-jetstream
+- **Repository:** https://github.com/MominAlZaraa/filament-team-guard
 - **Documentation:** See README.md for detailed usage instructions
-- **Issues:** https://github.com/MominAlZaraa/filament-jetstream/issues
+- **Issues:** https://github.com/MominAlZaraa/filament-team-guard/issues
 - **Support:** support@mominpert.com
 
 
@@ -432,7 +459,7 @@ This enhanced package builds upon:
 - **stephenjude/filament-jetstream**: Original Filament port
 - **Enhanced by**: Momin Al Zaraa - Complete Jetstream features and patterns
 
-**Repository**: https://github.com/MominAlZaraa/filament-jetstream
+**Repository**: https://github.com/MominAlZaraa/filament-team-guard
 
 
 ---

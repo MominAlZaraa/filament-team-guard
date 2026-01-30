@@ -26,6 +26,8 @@ parameters:
         - '#Using nullsafe property access .* on left side of \?\? is unnecessary#'
         - '#Parameter \#1 \$view of function .* expects view-string#'
         - '#Parameter \#1 \$view of method .* expects view-string#'
+        - '#Parameter \#1 \$view of static method .* expects view-string#'
+        - '#Call to function property_exists\(\) with .* and .* will always evaluate to true#'
         - '#Trait .* is used zero times and is not analysed#'
         - '#Instanceof between .* will always evaluate to true#'
         - '#Method .* should return .* but returns .*#'

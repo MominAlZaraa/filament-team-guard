@@ -52,8 +52,8 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', $this->team))
                     ->label(fn ($record): string => Jetstream::plugin()->roleModel::find($record->role)?->name ?? __('N/A'))
                     ->modalWidth('lg')
-                    ->modalHeading(__('filament-jetstream::default.action.update_team_role.title'))
-                    ->modalSubmitActionLabel(__('filament-jetstream::default.action.save.label'))
+                    ->modalHeading(__('filament-team-guard::default.action.update_team_role.title'))
+                    ->modalSubmitActionLabel(__('filament-team-guard::default.action.save.label'))
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->schema([
@@ -81,7 +81,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                             $this->team
                         )
                     )
-                    ->label(__('filament-jetstream::default.action.remove_team_member.label'))
+                    ->label(__('filament-team-guard::default.action.remove_team_member.label'))
                     ->color('danger')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->removeTeamMember($this->team, $record)),
@@ -89,8 +89,8 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->visible(fn ($record): bool => $this->authUser()->id === $record->id)
                     ->icon('heroicon-o-arrow-right-start-on-rectangle')
                     ->color('danger')
-                    ->label(__('filament-jetstream::default.action.leave_team.label'))
-                    ->modalDescription(__('filament-jetstream::default.action.leave_team.notice'))
+                    ->label(__('filament-team-guard::default.action.leave_team.label'))
+                    ->modalDescription(__('filament-team-guard::default.action.leave_team.notice'))
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->leaveTeam($record)),
             ]);
@@ -124,7 +124,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             $teamMember->user
         );
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_member_removed.success.message'));
+        $this->sendNotification(__('filament-team-guard::default.notification.team_member_removed.success.message'));
 
         $team->fresh();
     }
@@ -140,13 +140,13 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             $this->authUser()
         );
 
-        $this->sendNotification(__('filament-jetstream::default.notification.leave_team.success'));
+        $this->sendNotification(__('filament-team-guard::default.notification.leave_team.success'));
 
         $this->redirect(Filament::getHomeUrl());
     }
 
     public function render()
     {
-        return view('filament-jetstream::livewire.teams.team-members');
+        return view('filament-team-guard::livewire.teams.team-members');
     }
 }

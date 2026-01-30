@@ -18,7 +18,7 @@ class ApiTokens extends Page
 
     protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-key';
 
-    protected string $view = 'filament-jetstream::pages.api-tokens';
+    protected string $view = 'filament-team-guard::pages.api-tokens';
 
     public static function getRelativeRouteName(Panel $panel): string
     {

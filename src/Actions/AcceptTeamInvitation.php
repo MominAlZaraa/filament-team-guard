@@ -42,7 +42,7 @@ class AcceptTeamInvitation implements AcceptsTeamInvitations
         abort_if(
             boolean: $team->hasUserWithEmail($user->email),
             code: 403,
-            message: __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined')
+            message: __('filament-team-guard::default.action.add_team_member.error_message.email_already_joined')
         );
 
         // If user is not authenticated, redirect to login
@@ -79,9 +79,9 @@ class AcceptTeamInvitation implements AcceptsTeamInvitations
         // Show success notification
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
+            ->title(__('filament-team-guard::default.notification.accepted_invitation.success.title'))
             ->body(
-                __('filament-jetstream::default.notification.accepted_invitation.success.message', [
+                __('filament-team-guard::default.notification.accepted_invitation.success.message', [
                     'team' => $team->name,
                 ])
             )

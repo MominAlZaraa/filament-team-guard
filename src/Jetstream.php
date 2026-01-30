@@ -14,7 +14,7 @@ class Jetstream
     public static function plugin(): JetstreamPlugin
     {
         return static::panel()
-            ->getPlugin('filament-jetstream');
+            ->getPlugin('filament-team-guard');
     }
 
     public static function panel(): Panel

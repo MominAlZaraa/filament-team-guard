@@ -28,15 +28,15 @@ class DeleteTeam extends BaseLivewireComponent
             ->schema([
                 TextEntry::make('notice')
                     ->hiddenLabel()
-                    ->state(__('filament-jetstream::default.delete_team.section.notice')),
+                    ->state(__('filament-team-guard::default.delete_team.section.notice')),
                 Actions::make([
                     Action::make('deleteAccountAction')
-                        ->label(__('filament-jetstream::default.action.delete_team.label'))
+                        ->label(__('filament-team-guard::default.action.delete_team.label'))
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading(__('filament-jetstream::default.delete_team.section.title'))
-                        ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
-                        ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
+                        ->modalHeading(__('filament-team-guard::default.delete_team.section.title'))
+                        ->modalDescription(__('filament-team-guard::default.action.delete_team.notice'))
+                        ->modalSubmitActionLabel(__('filament-team-guard::default.action.delete_team.label'))
                         ->modalCancelAction(false)
                         ->action(fn () => $this->deleteTeam($this->team)),
                 ]),
@@ -45,7 +45,7 @@ class DeleteTeam extends BaseLivewireComponent
 
     public function render(): View
     {
-        return view('filament-jetstream::livewire.teams.delete-team');
+        return view('filament-team-guard::livewire.teams.delete-team');
     }
 
     public function deleteTeam(Team $team): void
@@ -62,7 +62,7 @@ class DeleteTeam extends BaseLivewireComponent
         $deleter = app(DeletesTeams::class);
         $deleter->delete($team);
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_deleted.success.message'));
+        $this->sendNotification(__('filament-team-guard::default.notification.team_deleted.success.message'));
 
         redirect()->to(Filament::getCurrentPanel()?->getUrl());
     }

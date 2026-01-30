@@ -2,26 +2,26 @@
 
 <x-filament-panels::page>
     @if (Jetstream::plugin()?->enabledProfileInformationUpdate())
-        @livewire(Filament\Jetstream\Livewire\Profile\UpdateProfileInformation::class)
+        @livewire('filament-team-guard.livewire.profile.update-profile-information')
     @endif
 
     @if (Jetstream::plugin()?->enabledPasswordUpdate())
-        @livewire(Filament\Jetstream\Livewire\Profile\UpdatePassword::class)
+        @livewire('filament-team-guard.livewire.profile.update-password')
     @endif
 
     @if (Jetstream::plugin()?->enabledTwoFactorAuthetication())
-        @livewire(\Stephenjude\FilamentTwoFactorAuthentication\Livewire\TwoFactorAuthentication::class)
+        @livewire('filament-team-guard.livewire.two-factor-authentication')
     @endif
 
     @if (Jetstream::plugin()?->enabledPasskeyAuthetication())
-        @livewire(\Stephenjude\FilamentTwoFactorAuthentication\Livewire\PasskeyAuthentication::class)
+        @livewire('filament-team-guard.livewire.passkey-authentication')
     @endif
 
     @if (Jetstream::plugin()?->enabledLogoutOtherBrowserSessions())
-        @livewire(Filament\Jetstream\Livewire\Profile\LogoutOtherBrowserSessions::class)
+        @livewire('filament-team-guard.livewire.profile.logout-other-browser-sessions')
     @endif
 
     @if (Jetstream::plugin()?->enabledDeleteAccount())
-        @livewire(Filament\Jetstream\Livewire\Profile\DeleteAccount::class)
+        @livewire('filament-team-guard.livewire.profile.delete-account')
     @endif
 </x-filament-panels::page>

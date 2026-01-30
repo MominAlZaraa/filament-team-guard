@@ -10,16 +10,21 @@ use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
+use Filament\Jetstream\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use Filament\Jetstream\Pages\Auth\Login;
+use Filament\Jetstream\Pages\Auth\PasswordReset\RequestPasswordReset;
+use Filament\Jetstream\Pages\Auth\PasswordReset\ResetPassword;
 use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
 use Filament\Jetstream\Policies\TeamPolicy;
+use Filament\Jetstream\TwoFactor\TwoFactorAuthenticationPlugin;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
-use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class JetstreamPlugin implements Plugin
 {
@@ -28,9 +33,11 @@ class JetstreamPlugin implements Plugin
     use HasProfileFeatures;
     use HasTeamsFeatures;
 
+    protected \Closure | bool $useTurnstile = false;
+
     public function getId(): string
     {
-        return 'filament-jetstream';
+        return 'filament-team-guard';
     }
 
     public static function make(): static
@@ -42,6 +49,21 @@ class JetstreamPlugin implements Plugin
     {
         /** @var static $plugin */
         return filament(app(static::class)->getId());
+    }
+
+    /**
+     * Enable Cloudflare Turnstile on login and register forms. Omit the argument or pass true to enable; pass false to disable.
+     */
+    public function turnstile(\Closure | bool $condition = true): static
+    {
+        $this->useTurnstile = $condition;
+
+        return $this;
+    }
+
+    public function usesTurnstile(): bool
+    {
+        return $this->evaluate($this->useTurnstile) === true;
     }
 
     public function register(Panel $panel): void
@@ -58,6 +80,30 @@ class JetstreamPlugin implements Plugin
                         requiresPassword: $this->requiresPasswordForAuthenticationSetup()
                     ),
             ]);
+
+        // When ->turnstile() is enabled, inject widget and validate using njoguamos/laravel-turnstile (config/turnstile.php).
+        if ($this->usesTurnstile()) {
+            $panel
+                ->login(Login::class)
+                ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
+                ->emailVerification(EmailVerificationPrompt::class)
+                ->renderHook(
+                    PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                    fn (): string => view('filament-team-guard::auth.turnstile')->render()
+                )
+                ->renderHook(
+                    PanelsRenderHook::AUTH_REGISTER_FORM_AFTER,
+                    fn (): string => view('filament-team-guard::auth.turnstile')->render()
+                )
+                ->renderHook(
+                    PanelsRenderHook::AUTH_PASSWORD_RESET_REQUEST_FORM_AFTER,
+                    fn (): string => view('filament-team-guard::auth.turnstile')->render()
+                )
+                ->renderHook(
+                    PanelsRenderHook::AUTH_PASSWORD_RESET_RESET_FORM_AFTER,
+                    fn (): string => view('filament-team-guard::auth.turnstile')->render()
+                );
+        }
 
         if ($this->hasApiTokensFeatures()) {
             $panel

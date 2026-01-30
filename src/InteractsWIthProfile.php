@@ -2,8 +2,8 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Jetstream\TwoFactor\TwoFactorAuthenticatable;
 use Filament\Panel;
-use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
 
 trait InteractsWIthProfile
 {

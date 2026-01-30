@@ -52,4 +52,23 @@ If the project maintainer has any additional requirements, you will find them li
 
 - **Send coherent history** - Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please [squash them](https://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages) before submitting.
 
+---
+
+## Submitting to the Filament website
+
+To list this plugin on [filamentphp.com](https://filamentphp.com):
+
+1. **Review the [Plugin Review Guidelines](https://github.com/filamentphp/filamentphp.com/blob/main/PLUGIN_REVIEW_GUIDELINES.md)** and [Contributing — Submitting a plugin](https://github.com/filamentphp/filamentphp.com#submitting-a-plugin).
+
+2. **Checklist before opening a PR:**
+   - **Purpose clear** — README explains what the plugin does (with examples/screenshots if helpful).
+   - **Filament / FilamentPHP** — Capitalized correctly in all docs.
+   - **Plugin image** — 16:9 aspect ratio, at least 2560×1440 px, preferably JPEG (`.github/plugin-banner.jpg`). Image should highlight functionality, not a full panel screenshot.
+   - **README image URL** — Use an absolute URL (e.g. `https://raw.githubusercontent.com/MominAlZaraa/filament-team-guard/main/.github/plugin-banner.jpg`) so the Filament site can embed it.
+   - **Author** — Author profile with short bio and avatar (1:1, at least 1000×1000 px, preferably JPEG).
+   - **Category** — Use a valid category from the [plugin categories](https://github.com/filamentphp/filamentphp.com/tree/main/content/plugin_categories).
+   - **PR** — Enable “Allow edits and access to secrets by maintainers” when opening the PR.
+
+3. **Content for the PR** — The `content/` folder in this repo mirrors the format used on filamentphp.com. When opening your PR on [filamentphp/filamentphp.com](https://github.com/filamentphp/filamentphp.com), add the author (if not already present) and the plugin entry using the same frontmatter as in `content/plugins/momin-alzaraa-team-guard.md` and `content/authors/momin-alzaraa.md`. Set the plugin image URL to your banner’s raw GitHub URL.
+
 **Happy coding**!

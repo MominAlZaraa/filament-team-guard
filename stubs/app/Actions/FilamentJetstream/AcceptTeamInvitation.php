@@ -40,7 +40,7 @@ class AcceptTeamInvitation extends BaseAcceptTeamInvitation
          }
 
          if ($team->hasUserWithEmail($user->email)) {
-             abort(403, __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined'));
+             abort(403, __('filament-team-guard::default.action.add_team_member.error_message.email_already_joined'));
          }
 
          if (!Filament::auth()->check()) {
@@ -60,8 +60,8 @@ class AcceptTeamInvitation extends BaseAcceptTeamInvitation
 
          Notification::make()
              ->success()
-             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
-             ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', [
+             ->title(__('filament-team-guard::default.notification.accepted_invitation.success.title'))
+             ->body(__('filament-team-guard::default.notification.accepted_invitation.success.message', [
                  'team' => $team->name,
              ]))
              ->send();

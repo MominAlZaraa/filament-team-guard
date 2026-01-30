@@ -13,7 +13,7 @@ use Filament\Schemas\Schema;
 
 class EditTeam extends EditTenantProfile
 {
-    protected string $view = 'filament-jetstream::pages.edit-team';
+    protected string $view = 'filament-team-guard::pages.edit-team';
 
     protected static ?int $navigationSort = 2;
 
@@ -35,6 +35,6 @@ class EditTeam extends EditTenantProfile
 
     public static function getLabel(): string
     {
-        return __('filament-jetstream::default.page.edit_team.title');
+        return __('filament-team-guard::default.page.edit_team.title');
     }
 }

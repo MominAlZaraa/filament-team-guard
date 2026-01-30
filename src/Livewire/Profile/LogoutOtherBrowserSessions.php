@@ -22,31 +22,31 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.browser_sessions.section.title'))
-                    ->description(__('filament-jetstream::default.browser_sessions.section.description'))
+                Section::make(__('filament-team-guard::default.browser_sessions.section.title'))
+                    ->description(__('filament-team-guard::default.browser_sessions.section.description'))
                     ->aside()
                     ->schema([
                         Forms\Components\ViewField::make('browserSessions')
                             ->hiddenLabel()
-                            ->view('filament-jetstream::components.browser-sessions')
+                            ->view('filament-team-guard::components.browser-sessions')
                             ->viewData(['sessions' => self::browserSessions()]),
                         Actions::make([
                             Action::make('deleteBrowserSessions')
-                                ->label(__('filament-jetstream::default.action.log_out_other_browsers.label'))
+                                ->label(__('filament-team-guard::default.action.log_out_other_browsers.label'))
                                 ->requiresConfirmation()
-                                ->modalHeading(__('filament-jetstream::default.action.log_out_other_browsers.title'))
+                                ->modalHeading(__('filament-team-guard::default.action.log_out_other_browsers.title'))
                                 ->modalDescription(
-                                    __('filament-jetstream::default.action.log_out_other_browsers.description')
+                                    __('filament-team-guard::default.action.log_out_other_browsers.description')
                                 )
                                 ->modalSubmitActionLabel(
-                                    __('filament-jetstream::default.action.log_out_other_browsers.label')
+                                    __('filament-team-guard::default.action.log_out_other_browsers.label')
                                 )
                                 ->modalCancelAction(false)
                                 ->schema([
                                     Forms\Components\TextInput::make('password')
                                         ->password()
                                         ->revealable()
-                                        ->label(__('filament-jetstream::default.form.password.label'))
+                                        ->label(__('filament-team-guard::default.form.password.label'))
                                         ->required()
                                         ->currentPassword(),
                                 ])
@@ -80,7 +80,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
 
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.notification.logged_out_other_sessions.success.message'))
+            ->title(__('filament-team-guard::default.notification.logged_out_other_sessions.success.message'))
             ->send();
     }
 
@@ -108,6 +108,6 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
 
     public function render(): View
     {
-        return view('filament-jetstream::livewire.profile.logout-other-browser-sessions');
+        return view('filament-team-guard::livewire.profile.logout-other-browser-sessions');
     }
 }

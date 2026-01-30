@@ -9,7 +9,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
 {
     protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-user-circle';
 
-    protected string $view = 'filament-jetstream::pages.edit-profile';
+    protected string $view = 'filament-team-guard::pages.edit-profile';
 
     protected static ?string $navigationLabel = 'Profile';
 

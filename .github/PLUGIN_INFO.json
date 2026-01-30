@@ -1,9 +1,9 @@
 {
-  "name": "Filament Jetstream",
-  "slug": "filament-jetstream",
-  "package": "mominalzaraa/filament-jetstream",
-  "description": "An enhanced Laravel starter kit built with Filament, inspired by Jetstream with complete team management features. Includes auth, registration, 2FA, session management, API tokens, and comprehensive team support.",
-  "repository": "https://github.com/MominAlZaraa/filament-jetstream",
+  "name": "Filament Team Guard",
+  "slug": "filament-team-guard",
+  "package": "mominalzaraa/filament-team-guard",
+  "description": "Enhanced Laravel starter kit built with Filament. Team management, auth, registration, 2FA, passkeys, Cloudflare Turnstile, session management, API tokens. Inspired by Laravel Jetstream.",
+  "repository": "https://github.com/MominAlZaraa/filament-team-guard",
   "author": {
     "name": "Momin Al Zaraa",
     "email": "support@mominpert.com",
@@ -17,41 +17,39 @@
       "website": "https://mominpert.com"
     }
   },
-  "image": "https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/main/.github/plugin-banner.jpg",
+  "image": "https://raw.githubusercontent.com/MominAlZaraa/filament-team-guard/main/.github/plugin-banner.jpg",
   "tags": [
-    "jetstream",
     "teams",
     "multi-tenant",
     "authentication",
     "starter-kit",
+    "2fa",
+    "passkeys",
     "filament",
     "laravel"
   ],
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "requirements": {
-    "php": "^8.3|^8.4",
+    "php": "^8.3|^8.4|^8.5",
     "laravel": "^12.0",
-    "filament": "^4.0"
+    "filament": "^5.0"
   },
   "features": [
-    "Complete team management features (add, remove, update roles)",
-    "Proper invitation flow (register to accept, not auto-registration)",
-    "Publishable Action classes with contracts (Jetstream pattern)",
-    "Publishable language files with locale-first structure",
-    "Enhanced email templates matching Jetstream's UI",
-    "Custom validation rules (Role rule matching Jetstream)",
-    "Better data handling aligned with Jetstream's mature patterns",
-    "Contract-based architecture matching Laravel Jetstream",
-    "Enhanced team member management",
-    "Team deletion validation",
-    "Custom translation loader with automatic merging"
+    "Auth: login, register, password reset, email verification",
+    "Profile: photo, info, password, sessions, delete account",
+    "2FA and passkeys (TOTP, recovery codes, Spatie Laravel Passkeys)",
+    "Optional Cloudflare Turnstile on auth and 2FA pages",
+    "Teams: create, invite, roles, member management",
+    "API tokens (Sanctum-style)",
+    "Publishable Action classes and contracts (Jetstream pattern)",
+    "Publishable language files with locale-first merge",
+    "Email invitation flow (no auto-registration)"
   ],
-  "documentation": "https://github.com/MominAlZaraa/filament-jetstream#readme",
+  "documentation": "https://github.com/MominAlZaraa/filament-team-guard#readme",
   "support": {
     "email": "support@mominpert.com",
-    "issues": "https://github.com/MominAlZaraa/filament-jetstream/issues",
-    "discussions": "https://github.com/MominAlZaraa/filament-jetstream/discussions"
+    "issues": "https://github.com/MominAlZaraa/filament-team-guard/issues",
+    "discussions": "https://github.com/MominAlZaraa/filament-team-guard/discussions"
   }
 }
-

@@ -1,24 +1,26 @@
 {
-    "name": "mominalzaraa/filament-jetstream",
-    "description": "An enhanced Laravel starter kit built with Filament, inspired by Jetstream with complete team management features.",
+    "name": "mominalzaraa/filament-team-guard",
+    "description": "Filament Team Guard — enhanced Laravel starter kit built with Filament. Team management, auth, 2FA, passkeys, API tokens. Inspired by Laravel Jetstream.",
     "keywords": [
         "mominalzaraa",
         "laravel",
-        "starter kit",
         "filament",
-        "filament-jetstream",
-        "jetstream",
+        "filament-team-guard",
         "teams",
-        "multi-tenant"
+        "multi-tenant",
+        "authentication",
+        "starter-kit",
+        "2fa",
+        "passkeys"
     ],
-    "homepage": "https://github.com/MominAlZaraa/filament-jetstream",
+    "homepage": "https://github.com/MominAlZaraa/filament-team-guard",
     "support": {
-        "issues": "https://github.com/MominAlZaraa/filament-jetstream/issues",
-        "source": "https://github.com/MominAlZaraa/filament-jetstream"
+        "issues": "https://github.com/MominAlZaraa/filament-team-guard/issues",
+        "source": "https://github.com/MominAlZaraa/filament-team-guard"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/MominAlZaraa/filament-jetstream.git"
+        "url": "https://github.com/MominAlZaraa/filament-team-guard.git"
     },
     "license": "MIT",
     "authors": [
@@ -29,11 +31,14 @@
         }
     ],
     "require": {
-        "php": "^8.3|^8.4",
-        "filament/filament": "^4.0",
-        "stephenjude/filament-two-factor-authentication": "^3.0",
+        "php": "^8.3|^8.4|^8.5",
+        "filament/filament": "^5.0",
         "illuminate/contracts": "^12.0",
         "mobiledetect/mobiledetectlib": "^4.8",
+        "njoguamos/laravel-turnstile": "^3.2",
+        "pragmarx/google2fa": "^8.0",
+        "bacon/bacon-qr-code": "^3.0",
+        "spatie/laravel-passkeys": "^1.0",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {

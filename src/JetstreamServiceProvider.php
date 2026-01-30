@@ -35,15 +35,24 @@ use Filament\Jetstream\Livewire\Teams\UpdateTeamName as UpdateTeamNameComponent;
 use Filament\Jetstream\Pages\ApiTokens;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
+use Filament\Jetstream\TwoFactor\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
+use Filament\Jetstream\TwoFactor\Livewire\PasskeyAuthentication as JetstreamPasskeyAuthentication;
+use Filament\Jetstream\TwoFactor\Livewire\TwoFactorAuthentication as JetstreamTwoFactorAuthentication;
+use Filament\Jetstream\TwoFactor\Pages\Challenge as TwoFactorChallengePage;
+use Filament\Jetstream\TwoFactor\Pages\Recovery as TwoFactorRecoveryPage;
+use Filament\Jetstream\TwoFactor\Pages\Setup as TwoFactorSetupPage;
+use Filament\Jetstream\TwoFactor\TwoFactorAuthenticationProvider as JetstreamTwoFactorAuthenticationProvider;
+use Illuminate\Contracts\Cache\Repository;
 use Livewire\Livewire;
+use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class JetstreamServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filament-jetstream';
+    public static string $name = 'filament-team-guard';
 
-    public static string $viewNamespace = 'filament-jetstream';
+    public static string $viewNamespace = 'filament-team-guard';
 
     public function configurePackage(Package $package): void
     {
@@ -60,11 +69,11 @@ class JetstreamServiceProvider extends PackageServiceProvider
 
         $this->publishes([
             __DIR__ . '/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
-        ], 'filament-jetstream-migrations');
+        ], 'filament-team-guard-migrations');
 
         $this->publishes([
             __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
-        ], 'filament-jetstream-team-migrations');
+        ], 'filament-team-guard-team-migrations');
 
         // Publish Action stubs
         $this->publishes([
@@ -77,15 +86,15 @@ class JetstreamServiceProvider extends PackageServiceProvider
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteTeam.php' => app_path('Actions/FilamentJetstream/DeleteTeam.php'),
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/DeleteUser.php' => app_path('Actions/FilamentJetstream/DeleteUser.php'),
             __DIR__ . '/../stubs/app/Actions/FilamentJetstream/AcceptTeamInvitation.php' => app_path('Actions/FilamentJetstream/AcceptTeamInvitation.php'),
-        ], 'filament-jetstream-actions');
+        ], 'filament-team-guard-actions');
 
         // Publish email templates
         $this->publishes([
-            __DIR__ . '/../resources/views/emails/team-invitation.blade.php' => resource_path('views/vendor/filament-jetstream/emails/team-invitation.blade.php'),
-        ], 'filament-jetstream-email-templates');
+            __DIR__ . '/../resources/views/emails/team-invitation.blade.php' => resource_path('views/vendor/filament-team-guard/emails/team-invitation.blade.php'),
+        ], 'filament-team-guard-email-templates');
 
         // Publish language files for customization
-        // Publish to lang/{locale}/filament-jetstream.php for better locale organization
+        // Publish to lang/{locale}/filament-team-guard.php for better locale organization
         $langFiles = [];
         $langPath = __DIR__ . '/../resources/lang';
 
@@ -95,27 +104,30 @@ class JetstreamServiceProvider extends PackageServiceProvider
                 $defaultFile = $localeDir . '/default.php';
 
                 if (file_exists($defaultFile)) {
-                    $langFiles[$defaultFile] = $this->app->langPath("{$locale}/filament-jetstream.php");
+                    $langFiles[$defaultFile] = $this->app->langPath("{$locale}/filament-team-guard.php");
                 }
             }
         }
 
-        $this->publishes($langFiles, 'filament-jetstream-lang');
+        $this->publishes($langFiles, 'filament-team-guard-lang');
     }
 
     public function packageRegistered(): void
     {
         $this->registerContracts();
+        $this->registerTwoFactorProvider();
         $this->registerCustomTranslationPaths();
     }
 
-    public function packageBooted()
+    public function packageBooted(): void
     {
+        // Register Livewire components so aliases are available (Livewire v4).
+        // Runs in packageBooted to ensure Livewire Finder is ready.
         $this->registerLivewireComponents();
     }
 
     /**
-     * Register custom translation paths to support lang/{locale}/filament-jetstream.php structure.
+     * Register custom translation paths to support lang/{locale}/filament-team-guard.php structure.
      * This extends the translation loader service to merge custom translations.
      */
     protected function registerCustomTranslationPaths(): void
@@ -132,12 +144,12 @@ class JetstreamServiceProvider extends PackageServiceProvider
 
                 public function load($locale, $group, $namespace = null)
                 {
-                    // Intercept filament-jetstream::default namespace
-                    if ($namespace === 'filament-jetstream' && $group === 'default') {
+                    // Intercept filament-team-guard::default namespace
+                    if ($namespace === 'filament-team-guard' && $group === 'default') {
                         // Always load package translations first
                         $packageTranslations = $this->originalLoader->load($locale, $group, $namespace);
 
-                        $customPath = $this->app->langPath("{$locale}/filament-jetstream.php");
+                        $customPath = $this->app->langPath("{$locale}/filament-team-guard.php");
 
                         // If custom file exists, merge with package translations
                         if (file_exists($customPath) && is_readable($customPath)) {
@@ -193,38 +205,54 @@ class JetstreamServiceProvider extends PackageServiceProvider
     {
         /*
          * Profile Components
+         * Use dot names (no ::) so Livewire v4 Finder checks classComponents for explicit aliases.
          */
-        Livewire::component('filament-jetstream::pages.edit-profile', EditProfile::class);
+        Livewire::component('filament-team-guard.pages.edit-profile', EditProfile::class);
         Livewire::component(
-            'filament-jetstream::livewire.profile.update-profile-information',
+            'filament-team-guard.livewire.profile.update-profile-information',
             UpdateProfileInformation::class
         );
-        Livewire::component('filament-jetstream::livewire.profile.update-password', UpdatePassword::class);
+        Livewire::component('filament-team-guard.livewire.profile.update-password', UpdatePassword::class);
         Livewire::component(
-            'filament-jetstream::livewire.profile.logout-other-browser-sessions',
+            'filament-team-guard.livewire.profile.logout-other-browser-sessions',
             LogoutOtherBrowserSessions::class
         );
-        Livewire::component('filament-jetstream::livewire.profile.delete-account', DeleteAccount::class);
+        Livewire::component('filament-team-guard.livewire.profile.delete-account', DeleteAccount::class);
 
         /*
          * Api Token Components
          */
-        Livewire::component('filament-jetstream::pages.api-tokens', ApiTokens::class);
-        Livewire::component('filament-jetstream::livewire.api-tokens.create-api-token', CreateApiToken::class);
-        Livewire::component('filament-jetstream::livewire.api-tokens.manage-api-tokens', ManageApiTokens::class);
+        Livewire::component('filament-team-guard.pages.api-tokens', ApiTokens::class);
+        Livewire::component('filament-team-guard.livewire.api-tokens.create-api-token', CreateApiToken::class);
+        Livewire::component('filament-team-guard.livewire.api-tokens.manage-api-tokens', ManageApiTokens::class);
 
         /*
          * Teams Components
          */
-        Livewire::component('filament-jetstream::pages.edit-teams', EditTeam::class);
-        Livewire::component('filament-jetstream::livewire.teams.update-team-name', UpdateTeamNameComponent::class);
-        Livewire::component('filament-jetstream::livewire.teams.add-team-member', AddTeamMemberComponent::class);
-        Livewire::component('filament-jetstream::livewire.teams.team-members', TeamMembers::class);
+        Livewire::component('filament-team-guard.pages.edit-teams', EditTeam::class);
+        Livewire::component('filament-team-guard.livewire.teams.update-team-name', UpdateTeamNameComponent::class);
+        Livewire::component('filament-team-guard.livewire.teams.add-team-member', AddTeamMemberComponent::class);
+        Livewire::component('filament-team-guard.livewire.teams.team-members', TeamMembers::class);
         Livewire::component(
-            'filament-jetstream::livewire.teams.pending-team-invitations',
+            'filament-team-guard.livewire.teams.pending-team-invitations',
             PendingTeamInvitations::class
         );
-        Livewire::component('filament-jetstream::livewire.teams.delete-team', DeleteTeamComponent::class);
+        Livewire::component('filament-team-guard.livewire.teams.delete-team', DeleteTeamComponent::class);
+
+        /*
+         * Two-factor Components
+         */
+        Livewire::component('filament-team-guard.pages.auth.challenge', TwoFactorChallengePage::class);
+        Livewire::component('filament-team-guard.pages.auth.recovery', TwoFactorRecoveryPage::class);
+        Livewire::component('filament-team-guard.pages.auth.setup', TwoFactorSetupPage::class);
+        Livewire::component(
+            'filament-team-guard.livewire.two-factor-authentication',
+            JetstreamTwoFactorAuthentication::class
+        );
+        Livewire::component(
+            'filament-team-guard.livewire.passkey-authentication',
+            JetstreamPasskeyAuthentication::class
+        );
     }
 
     /**
@@ -282,9 +310,22 @@ class JetstreamServiceProvider extends PackageServiceProvider
         }
 
         if (class_exists(\App\Actions\FilamentJetstream\AcceptTeamInvitation::class)) {
-            $this->app->singleton(AcceptsTeamInvitations::class, \App\Actions\FilamentJetstream\AcceptTeamInvitation::class);
+            $this->app->singleton(
+                AcceptsTeamInvitations::class,
+                \App\Actions\FilamentJetstream\AcceptTeamInvitation::class
+            );
         } else {
             $this->app->singleton(AcceptsTeamInvitations::class, AcceptTeamInvitation::class);
         }
+    }
+
+    protected function registerTwoFactorProvider(): void
+    {
+        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, function ($app) {
+            return new JetstreamTwoFactorAuthenticationProvider(
+                $app->make(Google2FA::class),
+                $app->make(Repository::class)
+            );
+        });
     }
 }

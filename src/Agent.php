@@ -118,7 +118,7 @@ class Agent extends MobileDetect
             }
 
             if ($this->match($regex, $userAgent)) {
-                return $key ?: reset($this->matchesArray);
+                return $key ?: (function_exists('array_first') ? array_first($this->matchesArray) : reset($this->matchesArray));
             }
         }
 

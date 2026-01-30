@@ -4,7 +4,6 @@ namespace App\Actions\FilamentJetstream;
 
 use Filament\Jetstream\Actions\InviteTeamMember as BaseInviteTeamMember;
 use Filament\Jetstream\Events\InvitingTeamMember;
-use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Rules\Role;
 use Filament\Models\Contracts\FilamentUser;
@@ -45,7 +44,7 @@ class InviteTeamMember extends BaseInviteTeamMember
              'email' => $email,
              'role' => $role,
          ], $this->rules($team), [
-             'email.unique' => __('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'),
+             'email.unique' => __('filament-team-guard::default.action.add_team_member.error_message.email_already_invited'),
          ])->after(
              $this->ensureUserIsNotAlreadyOnTeam($team, $email)
          )->validateWithBag('addTeamMember');
