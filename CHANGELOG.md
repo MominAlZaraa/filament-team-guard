@@ -4,6 +4,18 @@ All notable changes to `mominalzaraa/filament-team-guard` will be documented in 
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## Bug Fix: Turnstile auto enabling auth pages - 2026-01-31
+
+### v2.0.1 - 2026-01-31
+
+#### Bug Fixes
+
+**Turnstile no longer enables panel auth routes automatically**
+
+- Fixed bug where enabling `->turnstile()` caused the plugin to automatically set `->login()`, `->passwordReset()`, and `->emailVerification()` on the panel, enabling Filament auth routes even when the application uses Fortify or other auth for login/register.
+- Turnstile is now applied only via render hooks; it no longer enables login, register, password reset, or email verification pages. Those routes are only used when the application explicitly sets them on the panel.
+- Turnstile continues to apply on 2FA challenge/recovery pages (when two-factor is enabled) and on any panel auth pages that the application explicitly configures.
+- Updated `turnstile()` docblock to clarify that it only applies to auth forms that are explicitly enabled on the panel.
 
 ## v2.0.1 - 2026-01-31
 
@@ -15,7 +27,6 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 - Turnstile is now applied only via render hooks; it no longer enables login, register, password reset, or email verification pages. Those routes are only used when the application explicitly sets them on the panel.
 - Turnstile continues to apply on 2FA challenge/recovery pages (when two-factor is enabled) and on any panel auth pages that the application explicitly configures.
 - Updated `turnstile()` docblock to clarify that it only applies to auth forms that are explicitly enabled on the panel.
-
 
 ## v2.0.0 - 2026-01-30
 
@@ -40,6 +51,7 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 
 - 2FA implementation adapted from [stephenjude/filament-two-factor-authentication](https://github.com/stephenjude/filament-two-factor-authentication) by Stephen Jude; attribution in classes and lang.
 - Upgrading from v1.x: use Filament ^5.0 and Livewire ^4.0; remove `stephenjude/filament-two-factor-authentication`; keep `InteractsWIthProfile` on User (it uses embedded 2FA).
+
 
 ---
 
@@ -198,6 +210,7 @@ php artisan vendor:publish --tag=filament-team-guard-actions
 
 
 
+
 ```
 **Available Action Stubs:**
 
@@ -233,6 +246,7 @@ public function getFieldComponents(): array
 
 
 
+
 ```
 ###### 5. **Publishable Language Files**
 
@@ -240,6 +254,7 @@ Language files now publish to `lang/{locale}/filament-team-guard.php` for better
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-lang
+
 
 
 
@@ -259,6 +274,7 @@ php artisan vendor:publish --tag=filament-team-guard-lang
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-email-templates
+
 
 
 
@@ -339,6 +355,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    
    
    
+   
    ```
 2. **Publish New Components**
    
@@ -346,6 +363,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    php artisan vendor:publish --tag=filament-team-guard-actions
    php artisan vendor:publish --tag=filament-team-guard-lang
    php artisan vendor:publish --tag=filament-team-guard-email-templates
+   
    
    
    
