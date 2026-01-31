@@ -10,10 +10,6 @@ use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
-use Filament\Jetstream\Pages\Auth\EmailVerification\EmailVerificationPrompt;
-use Filament\Jetstream\Pages\Auth\Login;
-use Filament\Jetstream\Pages\Auth\PasswordReset\RequestPasswordReset;
-use Filament\Jetstream\Pages\Auth\PasswordReset\ResetPassword;
 use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
@@ -52,7 +48,10 @@ class JetstreamPlugin implements Plugin
     }
 
     /**
-     * Enable Cloudflare Turnstile on login and register forms. Omit the argument or pass true to enable; pass false to disable.
+     * Enable Cloudflare Turnstile on auth forms that are explicitly enabled on the panel.
+     * Turnstile is only injected where the panel already has those auth pages (e.g. login,
+     * register, password reset, 2FA challenge/recovery). It does not enable login/register
+     * or other auth routes automatically. Omit the argument or pass true to enable; pass false to disable.
      */
     public function turnstile(\Closure | bool $condition = true): static
     {
@@ -81,12 +80,11 @@ class JetstreamPlugin implements Plugin
                     ),
             ]);
 
-        // When ->turnstile() is enabled, inject widget and validate using njoguamos/laravel-turnstile (config/turnstile.php).
+        // When ->turnstile() is enabled, inject widget only on auth pages that are already enabled.
+        // Do NOT enable login/register/password reset/email verification automatically—only add
+        // the turnstile render hook so it applies when those pages are explicitly set by the app.
         if ($this->usesTurnstile()) {
             $panel
-                ->login(Login::class)
-                ->passwordReset(RequestPasswordReset::class, ResetPassword::class)
-                ->emailVerification(EmailVerificationPrompt::class)
                 ->renderHook(
                     PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
                     fn (): string => view('filament-team-guard::auth.turnstile')->render()
