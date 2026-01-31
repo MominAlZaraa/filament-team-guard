@@ -17,6 +17,13 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 - Turnstile continues to apply on 2FA challenge/recovery pages (when two-factor is enabled) and on any panel auth pages that the application explicitly configures.
 - Updated `turnstile()` docblock to clarify that it only applies to auth forms that are explicitly enabled on the panel.
 
+## v2.0.2 - 2026-01-31
+
+### Changed
+
+- **PHP support** — Composer requirement relaxed from `^8.3|^8.4|^8.5` to `^8.2` so the package can be used on PHP 8.2, 8.3, 8.4, and 8.5 (e.g. servers on 8.4 until 8.5 is available).
+
+
 ## v2.0.1 - 2026-01-31
 
 ### Bug Fixes
