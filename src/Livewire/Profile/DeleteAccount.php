@@ -3,6 +3,7 @@
 namespace Filament\Jetstream\Livewire\Profile;
 
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Jetstream;
@@ -48,7 +49,7 @@ class DeleteAccount extends BaseLivewireComponent
                                 ])
                                 ->action(fn (array $data) => $this->deleteAccount())
                                 ->successNotificationTitle(__('filament-team-guard::default.action.delete_account.success_title'))
-                                ->successRedirectUrl(route('login')),
+                                ->successRedirectUrl(Filament::getLoginUrl()),
                         ]),
                     ]),
             ]);

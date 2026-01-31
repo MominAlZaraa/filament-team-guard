@@ -4,6 +4,20 @@ All notable changes to `mominalzaraa/filament-team-guard` will be documented in 
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v2.0.3 - 2026-02-01
+
+### Bug Fixes
+
+**Profile page when teams are disabled**
+
+- `EditProfile::mount()` no longer assumes the user has a `currentTeam` relationship. It now checks `Jetstream::plugin()->hasTeamsFeatures()` and `method_exists($user, 'currentTeam')` before reading `currentTeam` or setting the tenant. Fixes "Public property [$turnstileResponse] not found" / profile error when using the plugin without teams (no `->teams()`, User without `InteractsWithTeams`).
+
+**Delete account redirect after sign-out**
+
+- `DeleteAccount` success redirect now uses `Filament::getLoginUrl()` instead of `route('login')`. Filament panels do not register a named `login` route; using it caused "Route [login] not defined" when opening the profile page (which renders the delete-account section). Redirect after account deletion now correctly goes to the panel login URL (e.g. `/admin/login`).
+
+---
+
 ## Bug Fix: Turnstile auto enabling auth pages - 2026-01-31
 
 ### v2.0.1 - 2026-01-31
