@@ -4,6 +4,68 @@ All notable changes to `mominalzaraa/filament-team-guard` will be documented in 
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v2.0.4 - 2026-03-05
+
+### Fixes
+
+#### 1) Turnstile enforcement on default auth pages
+
+Fixed a security/validation gap where Turnstile UI could show invalid state, but authentication could still proceed when panels used Filament default auth pages.
+
+##### Root cause
+
+- `->turnstile()` rendered the widget via hooks.
+- Default Filament auth pages (`->login()`, `->passwordReset()`, `->emailVerification()`, etc.) were not automatically swapped to the package Turnstile-validating pages.
+- Result: widget visible, but package Turnstile validation logic did not run in those default routes.
+
+##### Fix
+
+When `->turnstile()` is enabled, the plugin now automatically swaps **Filament default auth page actions** to Turnstile-aware package pages:
+
+- `Filament\Auth\Pages\Login` → `Filament\Jetstream\Pages\Auth\Login`
+- `Filament\Auth\Pages\Register` → `Filament\Jetstream\Pages\Auth\Register`
+- `Filament\Auth\Pages\PasswordReset\RequestPasswordReset` → `Filament\Jetstream\Pages\Auth\PasswordReset\RequestPasswordReset`
+- `Filament\Auth\Pages\PasswordReset\ResetPassword` → `Filament\Jetstream\Pages\Auth\PasswordReset\ResetPassword`
+- `Filament\Auth\Pages\EmailVerification\EmailVerificationPrompt` → `Filament\Jetstream\Pages\Auth\EmailVerification\EmailVerificationPrompt`
+
+Custom auth page overrides remain untouched.
+
+##### Regression coverage
+
+- Added tests to confirm:
+  - default pages are swapped when Turnstile is enabled
+  - custom auth pages are not overridden
+  
+
+
+---
+
+#### 2) Filament route override compatibility (PHPStan/Larastan CI fix)
+
+Fixed static analysis failure caused by Filament signature changes for page route registration.
+
+##### Problem
+
+`Filament\Jetstream\Pages\ApiTokens::registerRoutes()` overrode Filament `Page::registerRoutes()` but missed the optional second `$configuration` parameter (reported by CI).
+
+##### Fix
+
+Updated method signature in `ApiTokens` page to accept the optional second argument in a cross-version-safe way:
+
+- from: `registerRoutes(Panel $panel): void`
+- to: `registerRoutes(Panel $panel, mixed $configuration = null): void`
+
+This restores compatibility with Filament’s current contract and avoids override errors in Larastan/PHPStan.
+
+
+---
+
+#### Validation
+
+- Pint formatting passed
+- PHPStan/Larastan passed (`vendor/bin/phpstan analyse src tests --memory-limit=2G`)
+- Pest test suite passed
+
 ## v2.0.3 - 2026-02-01
 
 ### Bug Fixes
@@ -15,6 +77,7 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 **Delete account redirect after sign-out**
 
 - `DeleteAccount` success redirect now uses `Filament::getLoginUrl()` instead of `route('login')`. Filament panels do not register a named `login` route; using it caused "Route [login] not defined" when opening the profile page (which renders the delete-account section). Redirect after account deletion now correctly goes to the panel login URL (e.g. `/admin/login`).
+
 
 ---
 
@@ -36,7 +99,6 @@ This is an enhanced version of [stephenjude/filament-jetstream](https://github.c
 ### Changed
 
 - **PHP support** — Composer requirement relaxed from `^8.3|^8.4|^8.5` to `^8.2` so the package can be used on PHP 8.2, 8.3, 8.4, and 8.5 (e.g. servers on 8.4 until 8.5 is available).
-
 
 ## v2.0.1 - 2026-01-31
 
@@ -232,6 +294,7 @@ php artisan vendor:publish --tag=filament-team-guard-actions
 
 
 
+
 ```
 **Available Action Stubs:**
 
@@ -268,6 +331,7 @@ public function getFieldComponents(): array
 
 
 
+
 ```
 ###### 5. **Publishable Language Files**
 
@@ -275,6 +339,7 @@ Language files now publish to `lang/{locale}/filament-team-guard.php` for better
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-lang
+
 
 
 
@@ -295,6 +360,7 @@ php artisan vendor:publish --tag=filament-team-guard-lang
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-email-templates
+
 
 
 
@@ -377,6 +443,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    
    
    
+   
    ```
 2. **Publish New Components**
    
@@ -384,6 +451,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    php artisan vendor:publish --tag=filament-team-guard-actions
    php artisan vendor:publish --tag=filament-team-guard-lang
    php artisan vendor:publish --tag=filament-team-guard-email-templates
+   
    
    
    
