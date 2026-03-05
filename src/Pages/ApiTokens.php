@@ -25,7 +25,7 @@ class ApiTokens extends Page
         return 'tokens';
     }
 
-    public static function registerRoutes(Panel $panel): void
+    public static function registerRoutes(Panel $panel, mixed $configuration = null): void
     {
         if (filled(static::getCluster())) {
             Route::name(static::prependClusterRouteBaseName($panel, ''))
