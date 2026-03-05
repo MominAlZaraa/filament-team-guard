@@ -2,6 +2,11 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Auth\Pages\EmailVerification\EmailVerificationPrompt as BaseEmailVerificationPrompt;
+use Filament\Auth\Pages\Login as BaseLogin;
+use Filament\Auth\Pages\PasswordReset\RequestPasswordReset as BaseRequestPasswordReset;
+use Filament\Auth\Pages\PasswordReset\ResetPassword as BaseResetPassword;
+use Filament\Auth\Pages\Register as BaseRegister;
 use Filament\Contracts\Plugin;
 use Filament\Events\TenantSet;
 use Filament\Jetstream\Concerns\HasApiTokensFeatures;
@@ -10,7 +15,11 @@ use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
-use Filament\Jetstream\Pages\Auth\Register;
+use Filament\Jetstream\Pages\Auth\EmailVerification\EmailVerificationPrompt as TurnstileEmailVerificationPrompt;
+use Filament\Jetstream\Pages\Auth\Login as TurnstileLogin;
+use Filament\Jetstream\Pages\Auth\PasswordReset\RequestPasswordReset as TurnstileRequestPasswordReset;
+use Filament\Jetstream\Pages\Auth\PasswordReset\ResetPassword as TurnstileResetPassword;
+use Filament\Jetstream\Pages\Auth\Register as TurnstileRegister;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
@@ -84,6 +93,8 @@ class JetstreamPlugin implements Plugin
         // Do NOT enable login/register/password reset/email verification automatically—only add
         // the turnstile render hook so it applies when those pages are explicitly set by the app.
         if ($this->usesTurnstile()) {
+            $this->swapDefaultAuthPagesWithTurnstilePages($panel);
+
             $panel
                 ->renderHook(
                     PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
@@ -111,7 +122,7 @@ class JetstreamPlugin implements Plugin
 
         if ($this->hasTeamsFeatures()) {
             $panel
-                ->registration(Register::class)
+                ->registration(TurnstileRegister::class)
                 ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
@@ -130,5 +141,55 @@ class JetstreamPlugin implements Plugin
          * Register team policies
          */
         Gate::policy(Team::class, TeamPolicy::class);
+    }
+
+    protected function swapDefaultAuthPagesWithTurnstilePages(Panel $panel): void
+    {
+        $loginRouteAction = $panel->getLoginRouteAction();
+        if (
+            $panel->hasLogin() &&
+            is_string($loginRouteAction) &&
+            $loginRouteAction === BaseLogin::class
+        ) {
+            $panel->login(TurnstileLogin::class);
+        }
+
+        $registrationRouteAction = $panel->getRegistrationRouteAction();
+        if (
+            $panel->hasRegistration() &&
+            is_string($registrationRouteAction) &&
+            $registrationRouteAction === BaseRegister::class
+        ) {
+            $panel->registration(TurnstileRegister::class);
+        }
+
+        if ($panel->hasPasswordReset()) {
+            $requestPasswordResetRouteAction = $panel->getRequestPasswordResetRouteAction();
+            $resetPasswordRouteAction = $panel->getResetPasswordRouteAction();
+
+            $panel->passwordReset(
+                (
+                    is_string($requestPasswordResetRouteAction) &&
+                    $requestPasswordResetRouteAction === BaseRequestPasswordReset::class
+                )
+                    ? TurnstileRequestPasswordReset::class
+                    : $requestPasswordResetRouteAction,
+                (
+                    is_string($resetPasswordRouteAction) &&
+                    $resetPasswordRouteAction === BaseResetPassword::class
+                )
+                    ? TurnstileResetPassword::class
+                    : $resetPasswordRouteAction,
+            );
+        }
+
+        $emailVerificationRouteAction = $panel->getEmailVerificationPromptRouteAction();
+        if (
+            $panel->hasEmailVerification() &&
+            is_string($emailVerificationRouteAction) &&
+            $emailVerificationRouteAction === BaseEmailVerificationPrompt::class
+        ) {
+            $panel->emailVerification(TurnstileEmailVerificationPrompt::class, $panel->isEmailVerificationRequired());
+        }
     }
 }
