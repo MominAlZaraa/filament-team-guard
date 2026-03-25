@@ -2,7 +2,9 @@
 
 namespace Filament\Jetstream\Pages\Auth;
 
+use Filament\Auth\Http\Responses\Contracts\RegistrationResponse;
 use Filament\Facades\Filament;
+use Filament\Jetstream\Contracts\AddsTeamMembers;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Turnstile\ValidatesTurnstile;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +16,7 @@ class Register extends \Filament\Auth\Pages\Register
 
     public ?string $turnstileResponse = null;
 
-    public function register(?string $turnstileToken = null): ?\Filament\Auth\Http\Responses\Contracts\RegistrationResponse
+    public function register(?string $turnstileToken = null): ?RegistrationResponse
     {
         $this->validateTurnstile($turnstileToken);
 
@@ -76,8 +78,8 @@ class Register extends \Filament\Auth\Pages\Register
             return;
         }
 
-        /** @var \Filament\Jetstream\Contracts\AddsTeamMembers $addTeamMemberAction */
-        $addTeamMemberAction = app(\Filament\Jetstream\Contracts\AddsTeamMembers::class);
+        /** @var AddsTeamMembers $addTeamMemberAction */
+        $addTeamMemberAction = app(AddsTeamMembers::class);
 
         $addTeamMemberAction->add(
             $team->owner,

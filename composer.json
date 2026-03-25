@@ -18,10 +18,12 @@
         "issues": "https://github.com/MominAlZaraa/filament-team-guard/issues",
         "source": "https://github.com/MominAlZaraa/filament-team-guard"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/MominAlZaraa/filament-team-guard.git"
-    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/MominAlZaraa/filament-team-guard.git"
+        }
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -31,23 +33,24 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "filament/filament": "^5.0",
-        "illuminate/contracts": "^12.0",
+        "illuminate/contracts": "^13.0",
         "mobiledetect/mobiledetectlib": "^4.8",
-        "njoguamos/laravel-turnstile": "^3.2",
-        "pragmarx/google2fa": "^8.0",
+        "njoguamos/laravel-turnstile": "^4.0",
+        "pragmarx/google2fa": "^9.0",
         "bacon/bacon-qr-code": "^3.0",
         "spatie/laravel-passkeys": "^1.0",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
+        "ryangjchandler/blade-capture-directive": "^1.1",
         "nunomaduro/collision": "^8.0",
-        "orchestra/testbench": "^10.0",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-arch": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.0",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.1",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
         "larastan/larastan": "^3.0"
     },
     "autoload": {

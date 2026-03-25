@@ -5,6 +5,7 @@ namespace Filament\Jetstream\Concerns;
 use Closure;
 use Filament\Facades\Filament;
 use Filament\Jetstream\Contracts\AcceptsTeamInvitations;
+use Filament\Jetstream\Contracts\AddsTeamMembers;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Models\Membership;
 use Filament\Jetstream\Models\Team;
@@ -153,8 +154,8 @@ trait HasTeamsFeatures
         }
 
         // User exists and is authenticated - add to team using AddsTeamMembers contract (Jetstream pattern)
-        /** @var \Filament\Jetstream\Contracts\AddsTeamMembers $addTeamMemberAction */
-        $addTeamMemberAction = app(\Filament\Jetstream\Contracts\AddsTeamMembers::class);
+        /** @var AddsTeamMembers $addTeamMemberAction */
+        $addTeamMemberAction = app(AddsTeamMembers::class);
 
         // Use team owner for authorization (following Jetstream pattern)
         $addTeamMemberAction->add(
@@ -224,8 +225,8 @@ trait HasTeamsFeatures
         }
 
         // Add user to team using AddsTeamMembers contract (Jetstream pattern)
-        /** @var \Filament\Jetstream\Contracts\AddsTeamMembers $addTeamMemberAction */
-        $addTeamMemberAction = app(\Filament\Jetstream\Contracts\AddsTeamMembers::class);
+        /** @var AddsTeamMembers $addTeamMemberAction */
+        $addTeamMemberAction = app(AddsTeamMembers::class);
 
         $addTeamMemberAction->add(
             $team->owner,

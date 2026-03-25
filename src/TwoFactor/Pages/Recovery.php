@@ -11,6 +11,7 @@ use Filament\Jetstream\TwoFactor\Events\ValidTwoFactorRecoveryCodeProvided;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Recovery extends BaseSimplePage
 {
@@ -33,7 +34,7 @@ class Recovery extends BaseSimplePage
         $this->form->fill();
     }
 
-    public function authenticate(?string $turnstileToken = null): ?\Symfony\Component\HttpFoundation\Response
+    public function authenticate(?string $turnstileToken = null): ?Response
     {
         try {
             $this->validateTurnstile($turnstileToken);

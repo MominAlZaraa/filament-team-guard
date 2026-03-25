@@ -41,9 +41,13 @@ class TeamInvitation extends Mailable
             'path' => $panel->getId(),
         ]);
 
-        $acceptUrl = URL::signedRoute($path, [
-            'invitation' => $this->invitation,
-        ]);
+        $acceptUrl = URL::temporarySignedRoute(
+            $path,
+            now()->addMinutes((int) config('filament-team-guard.team_invitations.expires_in_minutes', 10080)),
+            [
+                'invitation' => $this->invitation,
+            ]
+        );
 
         $canRegister = $panel->hasRegistration();
         $registerUrl = $canRegister ? $panel->getRegistrationUrl() : null;

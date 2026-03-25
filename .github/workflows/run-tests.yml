@@ -10,28 +10,32 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      # Use Node 24 for JS-based actions (avoids checkout@v4 Node 20 deprecation noise; see GitHub changelog).
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     strategy:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.5]
-        laravel: [12.*]
+        php: [8.5, 8.4, 8.3]
+        laravel: [13.*]
         stability: [prefer-stable]
         include:
-          - laravel: 12.*
-            testbench: 10.*
+          - laravel: 13.*
+            testbench: 11.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          # imagick omitted: often flaky on ubuntu-latest + setup-php; not required for this package.
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, fileinfo
           coverage: none
 
       - name: Setup problem matchers
@@ -50,6 +54,10 @@ jobs:
       - name: Run Larastan analysis
         run: vendor/bin/phpstan analyse src tests --memory-limit=2G
 
+      # No pcov/xdebug on runner (coverage: none); phpunit.xml.dist defines coverage reports,
+      # so Pest would warn and fail when failOnWarning=true without --no-coverage.
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: |
+          mkdir -p build/logs
+          vendor/bin/pest --ci --no-coverage
 

@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\AuthorizationException;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class ManageApiTokens extends BaseLivewireComponent implements HasTable
@@ -53,6 +54,8 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
 
     public function updateToken(PersonalAccessToken $record, array $data)
     {
+        $this->ensureTokenBelongsToAuthenticatedUser($record);
+
         $record->forceFill([
             'abilities' => Jetstream::plugin()?->validPermissions(array_keys(array_filter($data))),
         ])->save();
@@ -62,6 +65,8 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
 
     public function deleteToken(PersonalAccessToken $record)
     {
+        $this->ensureTokenBelongsToAuthenticatedUser($record);
+
         $record->delete();
 
         $this->sendNotification(__('filament-team-guard::default.notification.token_deleted.success.message'));
@@ -70,5 +75,15 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
     public function render()
     {
         return view('filament-team-guard::livewire.api-tokens.manage-api-tokens');
+    }
+
+    protected function ensureTokenBelongsToAuthenticatedUser(PersonalAccessToken $token): void
+    {
+        $user = $this->authUser();
+
+        if ((string) $token->tokenable_id !== (string) $user->getKey() ||
+            $token->tokenable_type !== $user::class) {
+            throw new AuthorizationException;
+        }
     }
 }

@@ -3,11 +3,13 @@
 namespace Filament\Jetstream\Livewire\Teams;
 
 use Filament\Actions\Action;
+use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -51,6 +53,9 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
 
     public function resendTeamInvitation(Model $invitation)
     {
+        Gate::authorize('updateTeamMember', $this->team);
+        $this->ensureInvitationBelongsToTeam($invitation, $this->team);
+
         Mail::to($invitation->email)->send(new TeamInvitation($invitation));
 
         $this->sendNotification(__('filament-team-guard::default.notification.team_invitation_sent.success.message'));
@@ -58,6 +63,9 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
 
     public function cancelTeamInvitation(Team $team, Model $invitation)
     {
+        Gate::authorize('removeTeamMember', $team);
+        $this->ensureInvitationBelongsToTeam($invitation, $team);
+
         $invitation->delete();
 
         $team->fresh();
@@ -65,6 +73,15 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
         $this->sendNotification(
             __('filament-team-guard::default.notification.team_invitation_cancelled.success.message')
         );
+    }
+
+    protected function ensureInvitationBelongsToTeam(Model $invitation, Team $team): void
+    {
+        $foreignKey = Jetstream::getForeignKeyColumn($team::class);
+
+        if ((string) $invitation->getAttribute($foreignKey) !== (string) $team->getKey()) {
+            throw new AuthorizationException;
+        }
     }
 
     public function render()

@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Pages\Auth;
 
+use Filament\Auth\Http\Responses\Contracts\LoginResponse;
 use Filament\Auth\Pages\Login as BaseLogin;
 use Filament\Jetstream\Turnstile\ValidatesTurnstile;
 use Filament\Notifications\Notification;
@@ -13,7 +14,7 @@ class Login extends BaseLogin
 
     public ?string $turnstileResponse = null;
 
-    public function authenticate(?string $turnstileToken = null): ?\Filament\Auth\Http\Responses\Contracts\LoginResponse
+    public function authenticate(?string $turnstileToken = null): ?LoginResponse
     {
         $this->validateTurnstile($turnstileToken);
 

@@ -17,4 +17,17 @@ return [
     'turnstile' => [
         'reset_event' => env('TURNSTILE_RESET_EVENT', 'filament-team-guard-turnstile-reset'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Team invitation security
+    |--------------------------------------------------------------------------
+    |
+    | Invitation acceptance links are signed and can be time-limited.
+    | Set the expiration window (in minutes) to reduce replay risk from leaked links.
+    |
+    */
+    'team_invitations' => [
+        'expires_in_minutes' => env('FILAMENT_TEAM_GUARD_INVITATION_EXPIRES_IN_MINUTES', 10080),
+    ],
 ];

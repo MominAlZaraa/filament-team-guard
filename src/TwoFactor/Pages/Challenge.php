@@ -14,6 +14,7 @@ use Filament\Jetstream\TwoFactor\TwoFactorAuthenticationProvider;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Challenge extends BaseSimplePage
 {
@@ -53,7 +54,7 @@ class Challenge extends BaseSimplePage
             ->url(filament()->getCurrentOrDefaultPanel()->route('two-factor.recovery'));
     }
 
-    public function authenticate(?string $turnstileToken = null): ?\Symfony\Component\HttpFoundation\Response
+    public function authenticate(?string $turnstileToken = null): ?Response
     {
         try {
             $this->validateTurnstile($turnstileToken);

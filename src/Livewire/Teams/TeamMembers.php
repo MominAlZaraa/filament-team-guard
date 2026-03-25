@@ -76,7 +76,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->action(fn ($record, array $data) => $this->updateTeamRole($this->team, $record, $data)),
                 Action::make('removeTeamMember')
                     ->visible(
-                        fn ($record): bool => $this->authUser()->id !== $record->id && Gate::check(
+                        fn ($record): bool => $this->authUser()->id !== $record->user_id && Gate::check(
                             'removeTeamMember',
                             $this->team
                         )

@@ -9,6 +9,7 @@ use Filament\Jetstream\Events\TeamMemberAdded;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Rules\Role;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +59,7 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Get the validation rules for adding a team member.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, Rule|array|string>
      */
     protected function rules(string $userTable): array
     {

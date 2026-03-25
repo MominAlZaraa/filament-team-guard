@@ -43,6 +43,8 @@ use Filament\Jetstream\TwoFactor\Pages\Recovery as TwoFactorRecoveryPage;
 use Filament\Jetstream\TwoFactor\Pages\Setup as TwoFactorSetupPage;
 use Filament\Jetstream\TwoFactor\TwoFactorAuthenticationProvider as JetstreamTwoFactorAuthenticationProvider;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Translation\Loader;
 use Livewire\Livewire;
 use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
@@ -135,11 +137,11 @@ class JetstreamServiceProvider extends PackageServiceProvider
         // Extend the translation.loader service (FileLoader) instead of Translator
         // Must be registered in packageRegistered() to ensure it runs before service resolution
         $this->app->extend('translation.loader', function ($loader, $app) {
-            return new class($loader, $app) implements \Illuminate\Contracts\Translation\Loader
+            return new class($loader, $app) implements Loader
             {
                 public function __construct(
-                    protected \Illuminate\Contracts\Translation\Loader $originalLoader,
-                    protected \Illuminate\Contracts\Foundation\Application $app
+                    protected Loader $originalLoader,
+                    protected Application $app
                 ) {}
 
                 public function load($locale, $group, $namespace = null)
