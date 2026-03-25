@@ -4,6 +4,34 @@ All notable changes to `mominalzaraa/filament-team-guard` will be documented in 
 
 This is an enhanced version of [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream), which itself is inspired by the original [Laravel Jetstream](https://github.com/laravel/jetstream) package.
 
+## v2.1.0 - 2026-03-25
+
+### Summary
+
+Major compatibility release for **Laravel 13**, **Filament 5**, and **PHP 8.3+**, plus stronger test coverage for team invitations and a more reliable GitHub Actions pipeline.
+
+### What’s new
+
+- **Platform**: **PHP ^8.3**; **Laravel 13**-compatible dependencies; **Filament 5**; **Orchestra Testbench 11** and **Pest 4** for package development.
+- **Composer**: Valid **`repositories`** schema (publish-friendly); refreshed **lockfile** and dependency graph for the new stack.
+- **Stubs / apps**: Filament panel stubs updated to use **`PreventRequestForgery`** (Laravel 13 CSRF middleware naming).
+- **Tests**: New **feature tests** around **team invitation** authorization / cross-team boundaries; existing Pest suite kept green on the upgraded stack.
+- **DX / repo hygiene**: **`.phpunit.cache/`** ignored and removed from version control; **Pint** formatting across factories, `src/`, and stubs.
+- **CI (GitHub Actions)**:
+  - Matrix: **PHP 8.3–8.5**, **Laravel 13.***, **Testbench 11.***
+  - **`actions/checkout@v6`** and **`FORCE_JAVASCRIPT_ACTIONS_TO_NODE24`** to align with current Actions runner guidance
+  - **`pest --ci --no-coverage`** (no PCOV/Xdebug on runner)
+  - **`imagick`** dropped from `setup-php` extensions list (reduces flaky installs)
+  - **`phpunit.xml.dist`**: `failOnDeprecation="false"`, `beStrictAboutOutputDuringTests="false"` to avoid false failures from vendor noise on newer PHP minors
+  - Ensures **`build/logs`** exists before tests for report output paths
+  
+
+### Upgrade notes for consumers
+
+- Target **PHP ≥ 8.3**, **Laravel 13**, and **Filament 5** when adopting this release.
+- If you vendor or merge package stubs, re-sync **`AppPanelProvider`** (or equivalent) for **`PreventRequestForgery`**.
+- After `composer update`, run your panel/asset publish steps if your workflow requires them (`filament:upgrade`, etc., per your app).
+
 ## v2.0.4 - 2026-03-05
 
 ### Fixes
@@ -295,6 +323,7 @@ php artisan vendor:publish --tag=filament-team-guard-actions
 
 
 
+
 ```
 **Available Action Stubs:**
 
@@ -332,6 +361,7 @@ public function getFieldComponents(): array
 
 
 
+
 ```
 ###### 5. **Publishable Language Files**
 
@@ -339,6 +369,7 @@ Language files now publish to `lang/{locale}/filament-team-guard.php` for better
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-lang
+
 
 
 
@@ -360,6 +391,7 @@ php artisan vendor:publish --tag=filament-team-guard-lang
 
 ```bash
 php artisan vendor:publish --tag=filament-team-guard-email-templates
+
 
 
 
@@ -444,6 +476,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    
    
    
+   
    ```
 2. **Publish New Components**
    
@@ -451,6 +484,7 @@ php artisan vendor:publish --tag=filament-team-guard-email-templates
    php artisan vendor:publish --tag=filament-team-guard-actions
    php artisan vendor:publish --tag=filament-team-guard-lang
    php artisan vendor:publish --tag=filament-team-guard-email-templates
+   
    
    
    
