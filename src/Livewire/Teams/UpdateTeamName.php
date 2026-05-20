@@ -5,6 +5,7 @@ namespace Filament\Jetstream\Livewire\Teams;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
+use Filament\Jetstream\Contracts\UpdatesTeamNames;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
@@ -60,10 +61,9 @@ class UpdateTeamName extends BaseLivewireComponent
         // This ensures we have a fresh instance that exists in the database
         $team = get_class($this->team)::findOrFail($this->teamId);
 
-        // Update the team name using update() which ensures we're updating an existing record
-        $team->update([
-            'name' => $data['name'],
-        ]);
+        /** @var UpdatesTeamNames $action */
+        $action = app(UpdatesTeamNames::class);
+        $action->update($this->authUser(), $team, $data);
 
         $this->sendNotification();
     }
