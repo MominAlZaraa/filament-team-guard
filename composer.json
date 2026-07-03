@@ -60,7 +60,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Filament\\Jetstream\\Tests\\": "tests/"
+            "Filament\\Jetstream\\Tests\\": "tests/",
+            "App\\Models\\": "tests/Stubs/App/Models/"
         }
     },
     "scripts": {
