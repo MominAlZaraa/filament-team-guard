@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Tests\Feature;
 
-use Filament\Jetstream\Tests\Stubs\User;
 use Filament\Facades\Filament;
 use Filament\Jetstream\Actions\UpdateTeamName as UpdateTeamNameAction;
 use Filament\Jetstream\Contracts\UpdatesTeamNames;
@@ -10,6 +9,7 @@ use Filament\Jetstream\JetstreamPlugin;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Policies\TeamPolicy;
 use Filament\Jetstream\Tests\Concerns\CreatesTeamSchema;
+use Filament\Jetstream\Tests\Stubs\User;
 use Filament\Jetstream\Tests\Support\CustomPrefixUpdatesTeamNames;
 use Filament\Jetstream\Tests\Support\RecordingUpdatesTeamNames;
 use Filament\Jetstream\Tests\TestCase;

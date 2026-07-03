@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Tests;
 
+use App\Models\User;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
@@ -9,11 +10,11 @@ use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
 use Filament\Infolists\InfolistsServiceProvider;
 use Filament\Jetstream\JetstreamServiceProvider;
+use Filament\Jetstream\Tests\Stubs\User as TestUser;
 use Filament\Notifications\NotificationsServiceProvider;
 use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
-use Filament\Jetstream\Tests\Stubs\User as TestUser;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
@@ -26,8 +27,8 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        if (! class_exists(\App\Models\User::class)) {
-            class_alias(TestUser::class, \App\Models\User::class);
+        if (! class_exists(User::class)) {
+            class_alias(TestUser::class, User::class);
         }
 
         Factory::guessFactoryNamesUsing(
