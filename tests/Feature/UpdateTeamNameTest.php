@@ -2,7 +2,7 @@
 
 namespace Filament\Jetstream\Tests\Feature;
 
-use App\Models\User;
+use Filament\Jetstream\Tests\Stubs\User;
 use Filament\Facades\Filament;
 use Filament\Jetstream\Actions\UpdateTeamName as UpdateTeamNameAction;
 use Filament\Jetstream\Contracts\UpdatesTeamNames;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Filament\Jetstream\Tests\Stubs;
 
 use Filament\Jetstream\HasTeams;
 use Filament\Models\Contracts\FilamentUser;

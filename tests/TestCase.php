@@ -13,6 +13,7 @@ use Filament\Notifications\NotificationsServiceProvider;
 use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
+use Filament\Jetstream\Tests\Stubs\User as TestUser;
 use Filament\Widgets\WidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
@@ -24,6 +25,10 @@ class TestCase extends Orchestra
     protected function setUp(): void
     {
         parent::setUp();
+
+        if (! class_exists(\App\Models\User::class)) {
+            class_alias(TestUser::class, \App\Models\User::class);
+        }
 
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Filament\\Jetstream\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
